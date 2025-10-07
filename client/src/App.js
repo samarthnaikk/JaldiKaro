@@ -565,6 +565,42 @@ function App() {
     setNodes((nds) => [...nds, newNode]);
   };
 
+  const generateWebsite = async () => {
+    try {
+      console.log('🚀 Starting website generation...');
+      console.log('Nodes:', nodes);
+      console.log('Edges:', edges);
+
+      // Send the nodes and edges directly as the backend expects
+      const websiteData = {
+        nodes: nodes,
+        edges: edges
+      };
+
+      // Send to backend
+      const response = await fetch('http://localhost:3001/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(websiteData)
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('✅ Website generation successful:', result);
+        alert(`Website generated successfully! File saved to: ${result.filePath}`);
+      } else {
+        const errorText = await response.text();
+        console.error('❌ Failed to generate website:', errorText);
+        alert('Failed to generate website. Please try again.');
+      }
+    } catch (error) {
+      console.error('❌ Error generating website:', error);
+      alert('Error generating website. Make sure the backend is running.');
+    }
+  };
+
   const TabButton = ({ id, label, active, onClick }) => (
     <button
       onClick={() => onClick(id)}
@@ -845,6 +881,7 @@ function App() {
         {/* Generate Button */}
         <div style={{ padding: '20px', borderTop: '1px solid #e2e8f0' }}>
           <button 
+            onClick={generateWebsite}
             style={{ 
               width: '100%', 
               padding: '12px', 
