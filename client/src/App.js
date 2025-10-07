@@ -165,7 +165,13 @@ const PageElement = ({ data, selected }) => (
 
 // Enhanced Input Element with required field support
 const EnhancedInputElement = ({ data, selected }) => (
-  <div style={{ position: 'relative' }}>
+  <div style={{ 
+    position: 'relative',
+    resize: data.resizable ? 'both' : 'none',
+    overflow: 'auto',
+    minWidth: '100px',
+    minHeight: '60px'
+  }}>
     <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
     {data.label && (
       <label style={{ 
@@ -191,9 +197,9 @@ const EnhancedInputElement = ({ data, selected }) => (
         background: data.backgroundColor || 'white'
       }}
     />
-    {data.dbMapping && (
+    {(data.tableName && data.columnName) && (
       <div style={{ fontSize: '10px', color: '#8b5cf6', marginTop: '2px' }}>
-        → {data.dbMapping}
+        → {data.tableName}.{data.columnName}
       </div>
     )}
   </div>
@@ -201,7 +207,13 @@ const EnhancedInputElement = ({ data, selected }) => (
 
 // Dropdown/Select Element
 const SelectElement = ({ data, selected }) => (
-  <div style={{ position: 'relative' }}>
+  <div style={{ 
+    position: 'relative',
+    resize: data.resizable ? 'both' : 'none',
+    overflow: 'auto',
+    minWidth: '100px',
+    minHeight: '60px'
+  }}>
     <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
     {data.label && (
       <label style={{ 
@@ -230,9 +242,9 @@ const SelectElement = ({ data, selected }) => (
         <option key={index} value={option}>{option}</option>
       ))}
     </select>
-    {data.dbMapping && (
+    {(data.tableName && data.columnName) && (
       <div style={{ fontSize: '10px', color: '#8b5cf6', marginTop: '2px' }}>
-        → {data.dbMapping}
+        → {data.tableName}.{data.columnName}
       </div>
     )}
   </div>
@@ -240,7 +252,12 @@ const SelectElement = ({ data, selected }) => (
 
 // Radio Button (MCQ) Element
 const RadioElement = ({ data, selected }) => (
-  <div style={{ position: 'relative' }}>
+  <div style={{ 
+    position: 'relative',
+    resize: data.resizable ? 'both' : 'none',
+    overflow: 'auto',
+    minWidth: '100px'
+  }}>
     <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
     {data.label && (
       <label style={{ 
@@ -271,9 +288,9 @@ const RadioElement = ({ data, selected }) => (
         </div>
       ))}
     </div>
-    {data.dbMapping && (
+    {(data.tableName && data.columnName) && (
       <div style={{ fontSize: '10px', color: '#8b5cf6', marginTop: '2px' }}>
-        → {data.dbMapping}
+        → {data.tableName}.{data.columnName}
       </div>
     )}
   </div>
@@ -281,7 +298,12 @@ const RadioElement = ({ data, selected }) => (
 
 // Checkbox Element
 const CheckboxElement = ({ data, selected }) => (
-  <div style={{ position: 'relative' }}>
+  <div style={{ 
+    position: 'relative',
+    resize: data.resizable ? 'both' : 'none',
+    overflow: 'auto',
+    minWidth: '100px'
+  }}>
     <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
     {data.label && (
       <label style={{ 
@@ -311,9 +333,9 @@ const CheckboxElement = ({ data, selected }) => (
         </div>
       ))}
     </div>
-    {data.dbMapping && (
+    {(data.tableName && data.columnName) && (
       <div style={{ fontSize: '10px', color: '#8b5cf6', marginTop: '2px' }}>
-        → {data.dbMapping}
+        → {data.tableName}.{data.columnName}
       </div>
     )}
   </div>
@@ -321,7 +343,13 @@ const CheckboxElement = ({ data, selected }) => (
 
 // Textarea Element
 const TextareaElement = ({ data, selected }) => (
-  <div style={{ position: 'relative' }}>
+  <div style={{ 
+    position: 'relative',
+    resize: data.resizable ? 'both' : 'none',
+    overflow: 'auto',
+    minWidth: '100px',
+    minHeight: '80px'
+  }}>
     <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
     {data.label && (
       <label style={{ 
@@ -347,9 +375,9 @@ const TextareaElement = ({ data, selected }) => (
         resize: 'vertical'
       }}
     />
-    {data.dbMapping && (
+    {(data.tableName && data.columnName) && (
       <div style={{ fontSize: '10px', color: '#8b5cf6', marginTop: '2px' }}>
-        → {data.dbMapping}
+        → {data.tableName}.{data.columnName}
       </div>
     )}
   </div>
@@ -441,7 +469,9 @@ function App() {
     label: '',
     inputType: 'text',
     placeholder: '',
-    dbMapping: ''
+    tableName: '',
+    columnName: '',
+    required: false
   });
 
   const nodeTypes = useMemo(() => ({
@@ -486,37 +516,50 @@ function App() {
   }, []);
 
   const addUIElement = (type, data = {}) => {
+    // Get the highest z-index to ensure new elements appear on top
+    const maxZIndex = Math.max(...nodes.map(n => n.zIndex || 0), 0);
+    
     const newNode = {
       id: `ui-${Date.now()}`,
       type: `${type}Element`,
-      position: { x: Math.random() * 300, y: Math.random() * 300 },
-      data: { ...data },
+      position: { x: 100 + Math.random() * 200, y: 100 + Math.random() * 200 },
+      zIndex: maxZIndex + 1,
+      data: { ...data, resizable: true },
     };
     setNodes((nds) => [...nds, newNode]);
   };
 
   const addInputElement = () => {
+    const maxZIndex = Math.max(...nodes.map(n => n.zIndex || 0), 0);
+    
     const newNode = {
       id: `ui-${Date.now()}`,
-      type: 'inputElement',
-      position: { x: Math.random() * 300, y: Math.random() * 300 },
+      type: 'enhancedInputElement',
+      position: { x: 100 + Math.random() * 200, y: 100 + Math.random() * 200 },
+      zIndex: maxZIndex + 1,
       data: {
         label: inputConfig.label,
         inputType: inputConfig.inputType,
         placeholder: inputConfig.placeholder,
-        dbMapping: inputConfig.dbMapping
+        tableName: inputConfig.tableName,
+        columnName: inputConfig.columnName,
+        required: inputConfig.required,
+        resizable: true
       },
     };
     setNodes((nds) => [...nds, newNode]);
     setShowInputModal(false);
-    setInputConfig({ label: '', inputType: 'text', placeholder: '', dbMapping: '' });
+    setInputConfig({ label: '', inputType: 'text', placeholder: '', tableName: '', columnName: '', required: false });
   };
 
   const addBackendNode = (type, data = {}) => {
+    const maxZIndex = Math.max(...nodes.map(n => n.zIndex || 0), 0);
+    
     const newNode = {
       id: `${type}-${Date.now()}`,
       type: `${type}Node`,
       position: { x: 400 + Math.random() * 200, y: Math.random() * 300 },
+      zIndex: maxZIndex + 1,
       data: { ...data },
     };
     setNodes((nds) => [...nds, newNode]);
@@ -920,17 +963,37 @@ function App() {
             </div>
 
             <div style={{ marginBottom: '15px' }}>
-              <label>Database Mapping:</label>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={inputConfig.required}
+                  onChange={(e) => setInputConfig(prev => ({ ...prev, required: e.target.checked }))}
+                  style={{ marginRight: '8px' }}
+                />
+                Required field
+              </label>
+            </div>
+
+            <div style={{ marginBottom: '15px' }}>
+              <label>Database Table Name:</label>
               <input
                 type="text"
-                value={inputConfig.dbMapping}
-                onChange={(e) => setInputConfig(prev => ({ ...prev, dbMapping: e.target.value }))}
+                value={inputConfig.tableName}
+                onChange={(e) => setInputConfig(prev => ({ ...prev, tableName: e.target.value }))}
                 style={{ width: '100%', padding: '8px', marginTop: '5px' }}
-                placeholder="e.g., users.username, products.name"
+                placeholder="e.g., users, products, orders"
               />
-              <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '2px' }}>
-                Format: table.column (e.g., users.email)
-              </div>
+            </div>
+
+            <div style={{ marginBottom: '15px' }}>
+              <label>Database Column Name:</label>
+              <input
+                type="text"
+                value={inputConfig.columnName}
+                onChange={(e) => setInputConfig(prev => ({ ...prev, columnName: e.target.value }))}
+                style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+                placeholder="e.g., username, email, first_name"
+              />
             </div>
 
             <div style={{ display: 'flex', gap: '10px' }}>
