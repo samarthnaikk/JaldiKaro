@@ -1,0 +1,17 @@
+const express = require('express');
+const cors = require('cors');
+const app = express();
+const PORT = 3001;
+
+app.use(cors());
+app.use(express.json());
+
+// Placeholder endpoint for code generation
+app.post('/generate', (req, res) => {
+  // TODO: Generate website code from flow data
+  res.json({ success: true, code: '<!-- Generated code here -->' });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
