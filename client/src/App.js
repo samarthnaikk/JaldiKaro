@@ -21,7 +21,7 @@ const PageNode = ({ data }) => (
     minWidth: '150px'
   }}>
     <Handle type="target" position={Position.Top} />
-    <div style={{ fontWeight: 'bold', color: '#3b82f6' }}>📄 Page</div>
+    <div style={{ fontWeight: 'bold', color: '#3b82f6' }}>Page</div>
     <div style={{ fontSize: '12px', color: '#666' }}>{data.label}</div>
     <Handle type="source" position={Position.Bottom} />
   </div>
@@ -36,8 +36,27 @@ const ComponentNode = ({ data }) => (
     minWidth: '150px'
   }}>
     <Handle type="target" position={Position.Top} />
-    <div style={{ fontWeight: 'bold', color: '#10b981' }}>🧩 {data.type}</div>
+    <div style={{ fontWeight: 'bold', color: '#10b981' }}>{data.type}</div>
     <div style={{ fontSize: '12px', color: '#666' }}>{data.label}</div>
+    <Handle type="source" position={Position.Bottom} />
+  </div>
+);
+
+const InputNode = ({ data }) => (
+  <div style={{ 
+    background: '#fff', 
+    border: '2px solid #06b6d4', 
+    borderRadius: '8px', 
+    padding: '10px',
+    minWidth: '150px'
+  }}>
+    <Handle type="target" position={Position.Top} />
+    <div style={{ fontWeight: 'bold', color: '#06b6d4' }}>Input Field</div>
+    <div style={{ fontSize: '12px', color: '#666' }}>{data.label}</div>
+    <div style={{ fontSize: '10px', color: '#06b6d4', fontWeight: 'bold' }}>Type: {data.dataType}</div>
+    {data.dbColumn && (
+      <div style={{ fontSize: '10px', color: '#8b5cf6' }}>DB: {data.dbTable}.{data.dbColumn}</div>
+    )}
     <Handle type="source" position={Position.Bottom} />
   </div>
 );
@@ -51,7 +70,7 @@ const APINode = ({ data }) => (
     minWidth: '150px'
   }}>
     <Handle type="target" position={Position.Top} />
-    <div style={{ fontWeight: 'bold', color: '#f59e0b' }}>🔌 API</div>
+    <div style={{ fontWeight: 'bold', color: '#f59e0b' }}>API</div>
     <div style={{ fontSize: '12px', color: '#666' }}>{data.label}</div>
     <Handle type="source" position={Position.Bottom} />
   </div>
@@ -66,8 +85,13 @@ const DatabaseNode = ({ data }) => (
     minWidth: '150px'
   }}>
     <Handle type="target" position={Position.Top} />
-    <div style={{ fontWeight: 'bold', color: '#8b5cf6' }}>🗄️ Database</div>
+    <div style={{ fontWeight: 'bold', color: '#8b5cf6' }}>SQL Table</div>
     <div style={{ fontSize: '12px', color: '#666' }}>{data.label}</div>
+    {data.columns && (
+      <div style={{ fontSize: '10px', color: '#8b5cf6', marginTop: '5px' }}>
+        Columns: {data.columns.join(', ')}
+      </div>
+    )}
     <Handle type="source" position={Position.Bottom} />
   </div>
 );
@@ -101,10 +125,23 @@ const initialEdges = [
 function App() {
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
+  const [showInputModal, setShowInputModal] = useState(false);
+  const [showDbModal, setShowDbModal] = useState(false);
+  const [inputConfig, setInputConfig] = useState({
+    label: '',
+    dataType: 'string',
+    dbTable: '',
+    dbColumn: ''
+  });
+  const [dbConfig, setDbConfig] = useState({
+    tableName: '',
+    columns: []
+  });
 
   const nodeTypes = useMemo(() => ({
     pageNode: PageNode,
     componentNode: ComponentNode,
+    inputNode: InputNode,
     apiNode: APINode,
     databaseNode: DatabaseNode,
   }), []);
@@ -124,14 +161,67 @@ function App() {
     []
   );
 
-  const addNode = (type, nodeType, label) => {
+  const addNode = (type, nodeType, label, data = {}) => {
     const newNode = {
-      id: `${nodes.length + 1}`,
+      id: `${Date.now()}`,
       type: nodeType,
       position: { x: Math.random() * 400, y: Math.random() * 400 },
-      data: { label, type },
+      data: { label, type, ...data },
     };
     setNodes((nds) => [...nds, newNode]);
+  };
+
+  const addInputNode = () => {
+    const newNode = {
+      id: `${Date.now()}`,
+      type: 'inputNode',
+      position: { x: Math.random() * 400, y: Math.random() * 400 },
+      data: {
+        label: inputConfig.label,
+        dataType: inputConfig.dataType,
+        dbTable: inputConfig.dbTable,
+        dbColumn: inputConfig.dbColumn
+      },
+    };
+    setNodes((nds) => [...nds, newNode]);
+    setShowInputModal(false);
+    setInputConfig({ label: '', dataType: 'string', dbTable: '', dbColumn: '' });
+  };
+
+  const addDatabaseNode = () => {
+    const newNode = {
+      id: `${Date.now()}`,
+      type: 'databaseNode',
+      position: { x: Math.random() * 400, y: Math.random() * 400 },
+      data: {
+        label: dbConfig.tableName,
+        columns: dbConfig.columns
+      },
+    };
+    setNodes((nds) => [...nds, newNode]);
+    setShowDbModal(false);
+    setDbConfig({ tableName: '', columns: [] });
+  };
+
+  const addColumn = () => {
+    setDbConfig(prev => ({
+      ...prev,
+      columns: [...prev.columns, '']
+    }));
+  };
+
+  const updateColumn = (index, value) => {
+    setDbConfig(prev => ({
+      ...prev,
+      columns: prev.columns.map((col, i) => i === index ? value : col)
+    }));
+  };
+
+  const removeColumn = (index) => {
+    setDbConfig(prev => ({
+      ...prev,
+      columns: prev.columns.filter((_, i) => i !== index)
+    }));
   };
 
   return (
@@ -159,7 +249,7 @@ function App() {
               cursor: 'pointer'
             }}
           >
-            📄 Add Page
+            Add Page
           </button>
         </div>
 
@@ -177,7 +267,7 @@ function App() {
               cursor: 'pointer'
             }}
           >
-            🧩 Header
+            Header
           </button>
           <button 
             onClick={() => addNode('Footer', 'componentNode', 'Footer')}
@@ -191,21 +281,7 @@ function App() {
               cursor: 'pointer'
             }}
           >
-            🧩 Footer
-          </button>
-          <button 
-            onClick={() => addNode('Form', 'componentNode', 'Contact Form')}
-            style={{ 
-              width: '100%', 
-              padding: '8px', 
-              marginBottom: '5px',
-              border: '1px solid #10b981',
-              background: '#ecfdf5',
-              borderRadius: '4px',
-              cursor: 'pointer'
-            }}
-          >
-            🧩 Form
+            Footer
           </button>
           <button 
             onClick={() => addNode('Gallery', 'componentNode', 'Image Gallery')}
@@ -219,7 +295,53 @@ function App() {
               cursor: 'pointer'
             }}
           >
-            🧩 Gallery
+            Image Gallery
+          </button>
+        </div>
+
+        <div style={{ marginBottom: '20px' }}>
+          <h3 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '10px' }}>Form Elements</h3>
+          <button 
+            onClick={() => setShowInputModal(true)}
+            style={{ 
+              width: '100%', 
+              padding: '8px', 
+              marginBottom: '5px',
+              border: '1px solid #06b6d4',
+              background: '#ecfeff',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Input Field
+          </button>
+          <button 
+            onClick={() => addNode('Image', 'inputNode', 'Image Upload', { dataType: 'file' })}
+            style={{ 
+              width: '100%', 
+              padding: '8px', 
+              marginBottom: '5px',
+              border: '1px solid #06b6d4',
+              background: '#ecfeff',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Image Upload
+          </button>
+          <button 
+            onClick={() => addNode('Date', 'inputNode', 'Date Picker', { dataType: 'date' })}
+            style={{ 
+              width: '100%', 
+              padding: '8px', 
+              marginBottom: '5px',
+              border: '1px solid #06b6d4',
+              background: '#ecfeff',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Date Picker
           </button>
         </div>
 
@@ -237,10 +359,10 @@ function App() {
               cursor: 'pointer'
             }}
           >
-            🔌 API Endpoint
+            API Endpoint
           </button>
           <button 
-            onClick={() => addNode('Database', 'databaseNode', 'MongoDB')}
+            onClick={() => setShowDbModal(true)}
             style={{ 
               width: '100%', 
               padding: '8px', 
@@ -251,7 +373,7 @@ function App() {
               cursor: 'pointer'
             }}
           >
-            🗄️ Database
+            SQL Table
           </button>
         </div>
 
@@ -268,7 +390,7 @@ function App() {
               cursor: 'pointer'
             }}
           >
-            🚀 Generate Website
+            Generate Website
           </button>
         </div>
       </div>
@@ -289,6 +411,224 @@ function App() {
           <MiniMap />
         </ReactFlow>
       </div>
+
+      {/* Input Configuration Modal */}
+      {showInputModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000
+        }}>
+          <div style={{
+            background: 'white',
+            padding: '20px',
+            borderRadius: '8px',
+            width: '400px'
+          }}>
+            <h3>Configure Input Field</h3>
+            
+            <div style={{ marginBottom: '15px' }}>
+              <label>Label:</label>
+              <input
+                type="text"
+                value={inputConfig.label}
+                onChange={(e) => setInputConfig(prev => ({ ...prev, label: e.target.value }))}
+                style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+                placeholder="e.g., Username, Email"
+              />
+            </div>
+
+            <div style={{ marginBottom: '15px' }}>
+              <label>Data Type:</label>
+              <select
+                value={inputConfig.dataType}
+                onChange={(e) => setInputConfig(prev => ({ ...prev, dataType: e.target.value }))}
+                style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+              >
+                <option value="string">String</option>
+                <option value="integer">Integer</option>
+                <option value="float">Float</option>
+                <option value="boolean">Boolean</option>
+                <option value="date">Date</option>
+                <option value="email">Email</option>
+                <option value="file">File</option>
+              </select>
+            </div>
+
+            <div style={{ marginBottom: '15px' }}>
+              <label>Database Table:</label>
+              <input
+                type="text"
+                value={inputConfig.dbTable}
+                onChange={(e) => setInputConfig(prev => ({ ...prev, dbTable: e.target.value }))}
+                style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+                placeholder="e.g., users, products"
+              />
+            </div>
+
+            <div style={{ marginBottom: '15px' }}>
+              <label>Database Column:</label>
+              <input
+                type="text"
+                value={inputConfig.dbColumn}
+                onChange={(e) => setInputConfig(prev => ({ ...prev, dbColumn: e.target.value }))}
+                style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+                placeholder="e.g., username, email"
+              />
+            </div>
+
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button
+                onClick={addInputNode}
+                style={{
+                  flex: 1,
+                  padding: '10px',
+                  background: '#10b981',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                Add Input
+              </button>
+              <button
+                onClick={() => setShowInputModal(false)}
+                style={{
+                  flex: 1,
+                  padding: '10px',
+                  background: '#6b7280',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Database Configuration Modal */}
+      {showDbModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000
+        }}>
+          <div style={{
+            background: 'white',
+            padding: '20px',
+            borderRadius: '8px',
+            width: '400px',
+            maxHeight: '80vh',
+            overflow: 'auto'
+          }}>
+            <h3>Create SQL Table</h3>
+            
+            <div style={{ marginBottom: '15px' }}>
+              <label>Table Name:</label>
+              <input
+                type="text"
+                value={dbConfig.tableName}
+                onChange={(e) => setDbConfig(prev => ({ ...prev, tableName: e.target.value }))}
+                style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+                placeholder="e.g., users, products"
+              />
+            </div>
+
+            <div style={{ marginBottom: '15px' }}>
+              <label>Columns:</label>
+              {dbConfig.columns.map((column, index) => (
+                <div key={index} style={{ display: 'flex', gap: '5px', marginTop: '5px' }}>
+                  <input
+                    type="text"
+                    value={column}
+                    onChange={(e) => updateColumn(index, e.target.value)}
+                    style={{ flex: 1, padding: '8px' }}
+                    placeholder="Column name"
+                  />
+                  <button
+                    onClick={() => removeColumn(index)}
+                    style={{
+                      padding: '8px',
+                      background: '#dc2626',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+              <button
+                onClick={addColumn}
+                style={{
+                  width: '100%',
+                  padding: '8px',
+                  marginTop: '5px',
+                  background: '#3b82f6',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                Add Column
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button
+                onClick={addDatabaseNode}
+                style={{
+                  flex: 1,
+                  padding: '10px',
+                  background: '#8b5cf6',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                Create Table
+              </button>
+              <button
+                onClick={() => setShowDbModal(false)}
+                style={{
+                  flex: 1,
+                  padding: '10px',
+                  background: '#6b7280',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
