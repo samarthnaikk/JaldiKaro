@@ -59,7 +59,7 @@ const InputElement = ({ data, selected }) => (
     />
     {data.dbMapping && (
       <div style={{ fontSize: '10px', color: '#8b5cf6', marginTop: '2px' }}>
-        → {data.dbTable}.{data.dbColumn}
+        → {data.dbMapping}
       </div>
     )}
   </div>
@@ -121,6 +121,240 @@ const ContainerElement = ({ data, selected }) => (
   </div>
 );
 
+// Page Container Component
+const PageElement = ({ data, selected }) => (
+  <div style={{
+    width: data.width || '800px',
+    height: data.height || '600px',
+    background: data.backgroundColor || '#ffffff',
+    border: selected ? '3px solid #ff6b6b' : '2px solid #e5e7eb',
+    borderRadius: '8px',
+    padding: '20px',
+    position: 'relative',
+    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+  }}>
+    <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
+    <div style={{
+      position: 'absolute',
+      top: '-15px',
+      left: '10px',
+      background: '#3b82f6',
+      color: 'white',
+      padding: '4px 8px',
+      fontSize: '12px',
+      borderRadius: '4px',
+      fontWeight: 'bold'
+    }}>
+      📄 {data.pageName || 'Page'}
+    </div>
+    <div style={{
+      width: '100%',
+      height: '100%',
+      border: '1px dashed #d1d5db',
+      borderRadius: '4px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: '#9ca3af',
+      fontSize: '14px'
+    }}>
+      Drop form elements here
+    </div>
+  </div>
+);
+
+// Enhanced Input Element with required field support
+const EnhancedInputElement = ({ data, selected }) => (
+  <div style={{ position: 'relative' }}>
+    <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
+    {data.label && (
+      <label style={{ 
+        display: 'block', 
+        fontSize: '12px', 
+        marginBottom: '4px',
+        color: data.labelColor || '#374151',
+        fontWeight: data.required ? 'bold' : 'normal'
+      }}>
+        {data.label} {data.required && <span style={{ color: '#ef4444' }}>*</span>}
+      </label>
+    )}
+    <input
+      type={data.inputType || 'text'}
+      placeholder={data.placeholder || ''}
+      style={{
+        width: data.width || '200px',
+        height: data.height || '40px',
+        padding: `${data.paddingY || 8}px ${data.paddingX || 12}px`,
+        border: selected ? '2px solid #ff6b6b' : `1px solid ${data.borderColor || '#d1d5db'}`,
+        borderRadius: data.borderRadius || '4px',
+        fontSize: data.fontSize || '14px',
+        background: data.backgroundColor || 'white'
+      }}
+    />
+    {data.dbMapping && (
+      <div style={{ fontSize: '10px', color: '#8b5cf6', marginTop: '2px' }}>
+        → {data.dbMapping}
+      </div>
+    )}
+  </div>
+);
+
+// Dropdown/Select Element
+const SelectElement = ({ data, selected }) => (
+  <div style={{ position: 'relative' }}>
+    <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
+    {data.label && (
+      <label style={{ 
+        display: 'block', 
+        fontSize: '12px', 
+        marginBottom: '4px',
+        color: data.labelColor || '#374151',
+        fontWeight: data.required ? 'bold' : 'normal'
+      }}>
+        {data.label} {data.required && <span style={{ color: '#ef4444' }}>*</span>}
+      </label>
+    )}
+    <select
+      style={{
+        width: data.width || '200px',
+        height: data.height || '40px',
+        padding: `${data.paddingY || 8}px ${data.paddingX || 12}px`,
+        border: selected ? '2px solid #ff6b6b' : `1px solid ${data.borderColor || '#d1d5db'}`,
+        borderRadius: data.borderRadius || '4px',
+        fontSize: data.fontSize || '14px',
+        background: data.backgroundColor || 'white'
+      }}
+    >
+      <option value="">{data.placeholder || 'Select an option'}</option>
+      {data.options && data.options.map((option, index) => (
+        <option key={index} value={option}>{option}</option>
+      ))}
+    </select>
+    {data.dbMapping && (
+      <div style={{ fontSize: '10px', color: '#8b5cf6', marginTop: '2px' }}>
+        → {data.dbMapping}
+      </div>
+    )}
+  </div>
+);
+
+// Radio Button (MCQ) Element
+const RadioElement = ({ data, selected }) => (
+  <div style={{ position: 'relative' }}>
+    <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
+    {data.label && (
+      <label style={{ 
+        display: 'block', 
+        fontSize: '12px', 
+        marginBottom: '8px',
+        color: data.labelColor || '#374151',
+        fontWeight: data.required ? 'bold' : 'normal'
+      }}>
+        {data.label} {data.required && <span style={{ color: '#ef4444' }}>*</span>}
+      </label>
+    )}
+    <div style={{
+      border: selected ? '2px solid #ff6b6b' : `1px solid ${data.borderColor || '#d1d5db'}`,
+      borderRadius: data.borderRadius || '4px',
+      padding: '8px',
+      background: data.backgroundColor || 'white'
+    }}>
+      {data.options && data.options.map((option, index) => (
+        <div key={index} style={{ marginBottom: '4px', display: 'flex', alignItems: 'center' }}>
+          <input
+            type="radio"
+            name={data.name || 'radio-group'}
+            value={option}
+            style={{ marginRight: '8px' }}
+          />
+          <span style={{ fontSize: '14px' }}>{option}</span>
+        </div>
+      ))}
+    </div>
+    {data.dbMapping && (
+      <div style={{ fontSize: '10px', color: '#8b5cf6', marginTop: '2px' }}>
+        → {data.dbMapping}
+      </div>
+    )}
+  </div>
+);
+
+// Checkbox Element
+const CheckboxElement = ({ data, selected }) => (
+  <div style={{ position: 'relative' }}>
+    <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
+    {data.label && (
+      <label style={{ 
+        display: 'block', 
+        fontSize: '12px', 
+        marginBottom: '8px',
+        color: data.labelColor || '#374151',
+        fontWeight: data.required ? 'bold' : 'normal'
+      }}>
+        {data.label} {data.required && <span style={{ color: '#ef4444' }}>*</span>}
+      </label>
+    )}
+    <div style={{
+      border: selected ? '2px solid #ff6b6b' : `1px solid ${data.borderColor || '#d1d5db'}`,
+      borderRadius: data.borderRadius || '4px',
+      padding: '8px',
+      background: data.backgroundColor || 'white'
+    }}>
+      {data.options && data.options.map((option, index) => (
+        <div key={index} style={{ marginBottom: '4px', display: 'flex', alignItems: 'center' }}>
+          <input
+            type="checkbox"
+            value={option}
+            style={{ marginRight: '8px' }}
+          />
+          <span style={{ fontSize: '14px' }}>{option}</span>
+        </div>
+      ))}
+    </div>
+    {data.dbMapping && (
+      <div style={{ fontSize: '10px', color: '#8b5cf6', marginTop: '2px' }}>
+        → {data.dbMapping}
+      </div>
+    )}
+  </div>
+);
+
+// Textarea Element
+const TextareaElement = ({ data, selected }) => (
+  <div style={{ position: 'relative' }}>
+    <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
+    {data.label && (
+      <label style={{ 
+        display: 'block', 
+        fontSize: '12px', 
+        marginBottom: '4px',
+        color: data.labelColor || '#374151',
+        fontWeight: data.required ? 'bold' : 'normal'
+      }}>
+        {data.label} {data.required && <span style={{ color: '#ef4444' }}>*</span>}
+      </label>
+    )}
+    <textarea
+      placeholder={data.placeholder || ''}
+      rows={data.rows || 4}
+      style={{
+        width: data.width || '250px',
+        padding: `${data.paddingY || 8}px ${data.paddingX || 12}px`,
+        border: selected ? '2px solid #ff6b6b' : `1px solid ${data.borderColor || '#d1d5db'}`,
+        borderRadius: data.borderRadius || '4px',
+        fontSize: data.fontSize || '14px',
+        background: data.backgroundColor || 'white',
+        resize: 'vertical'
+      }}
+    />
+    {data.dbMapping && (
+      <div style={{ fontSize: '10px', color: '#8b5cf6', marginTop: '2px' }}>
+        → {data.dbMapping}
+      </div>
+    )}
+  </div>
+);
+
 // Backend Flow Components (n8n-style)
 const APINode = ({ data }) => (
   <div style={{ 
@@ -146,14 +380,8 @@ const DatabaseNode = ({ data }) => (
     minWidth: '150px'
   }}>
     <Handle type="target" position={Position.Left} />
-    <div style={{ fontWeight: 'bold', color: '#8b5cf6' }}>SQL Table</div>
-    <div style={{ fontSize: '12px', color: '#666' }}>{data.tableName || 'users'}</div>
-    {data.columns && (
-      <div style={{ fontSize: '10px', color: '#8b5cf6', marginTop: '4px' }}>
-        {data.columns.slice(0, 3).join(', ')}
-        {data.columns.length > 3 && '...'}
-      </div>
-    )}
+    <div style={{ fontWeight: 'bold', color: '#8b5cf6' }}>Database</div>
+    <div style={{ fontSize: '12px', color: '#666' }}>SQL Storage</div>
     <Handle type="source" position={Position.Right} />
   </div>
 );
@@ -174,59 +402,60 @@ const ValidationNode = ({ data }) => (
 );
 
 const initialNodes = [
-  // UI Layer
+  // Page Container
   {
-    id: 'ui-1',
-    type: 'inputElement',
-    position: { x: 50, y: 100 },
+    id: 'page-1',
+    type: 'pageElement',
+    position: { x: 50, y: 50 },
     data: { 
-      label: 'Username', 
-      placeholder: 'Enter username',
-      width: '200px',
-      dbMapping: true,
-      dbTable: 'users',
-      dbColumn: 'username'
+      pageName: 'Home Page',
+      width: '600px',
+      height: '400px'
     },
-  },
-  {
-    id: 'ui-2',
-    type: 'buttonElement',
-    position: { x: 50, y: 200 },
-    data: { text: 'Submit', backgroundColor: '#10b981' },
   },
   
   // Backend Layer
   {
     id: 'api-1',
     type: 'apiNode',
-    position: { x: 400, y: 150 },
+    position: { x: 750, y: 150 },
     data: { method: 'POST', endpoint: '/api/users' },
   },
   {
     id: 'db-1',
     type: 'databaseNode',
-    position: { x: 650, y: 150 },
-    data: { tableName: 'users', columns: ['id', 'username', 'email', 'created_at'] },
+    position: { x: 950, y: 150 },
+    data: {},
   },
 ];
 
-const initialEdges = [
-  { id: 'e1', source: 'ui-2', target: 'api-1', type: 'smoothstep' },
-  { id: 'e2', source: 'api-1', target: 'db-1', type: 'smoothstep' },
-];
+const initialEdges = [];
 
 function App() {
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
   const [selectedNode, setSelectedNode] = useState(null);
   const [activeTab, setActiveTab] = useState('design'); // 'design' or 'flow'
-  const [showElementModal, setShowElementModal] = useState(false);
-  const [elementType, setElementType] = useState('');
+  const [showInputModal, setShowInputModal] = useState(false);
+  const [inputConfig, setInputConfig] = useState({
+    label: '',
+    inputType: 'text',
+    placeholder: '',
+    dbMapping: ''
+  });
 
   const nodeTypes = useMemo(() => ({
+    // Pages
+    pageElement: PageElement,
+    
     // UI Elements
     buttonElement: ButtonElement,
     inputElement: InputElement,
+    enhancedInputElement: EnhancedInputElement,
+    selectElement: SelectElement,
+    radioElement: RadioElement,
+    checkboxElement: CheckboxElement,
+    textareaElement: TextareaElement,
     textElement: TextElement,
     imageElement: ImageElement,
     containerElement: ContainerElement,
@@ -264,6 +493,23 @@ function App() {
       data: { ...data },
     };
     setNodes((nds) => [...nds, newNode]);
+  };
+
+  const addInputElement = () => {
+    const newNode = {
+      id: `ui-${Date.now()}`,
+      type: 'inputElement',
+      position: { x: Math.random() * 300, y: Math.random() * 300 },
+      data: {
+        label: inputConfig.label,
+        inputType: inputConfig.inputType,
+        placeholder: inputConfig.placeholder,
+        dbMapping: inputConfig.dbMapping
+      },
+    };
+    setNodes((nds) => [...nds, newNode]);
+    setShowInputModal(false);
+    setInputConfig({ label: '', inputType: 'text', placeholder: '', dbMapping: '' });
   };
 
   const addBackendNode = (type, data = {}) => {
@@ -327,10 +573,123 @@ function App() {
         <div style={{ flex: 1, padding: '20px', overflowY: 'auto' }}>
           {activeTab === 'design' && (
             <>
-              <h3 style={{ margin: '0 0 15px 0', fontSize: '16px' }}>UI Elements</h3>
+              <h3 style={{ margin: '0 0 15px 0', fontSize: '16px' }}>Pages & Elements</h3>
               
               <div style={{ marginBottom: '20px' }}>
-                <h4 style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '8px', color: '#6b7280' }}>BASIC</h4>
+                <h4 style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '8px', color: '#6b7280' }}>PAGES</h4>
+                <button 
+                  onClick={() => addUIElement('page', { pageName: 'New Page', width: '600px', height: '400px' })}
+                  style={{ 
+                    width: '100%', 
+                    padding: '8px', 
+                    marginBottom: '4px',
+                    border: '1px solid #3b82f6',
+                    background: '#eff6ff',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    textAlign: 'left'
+                  }}
+                >
+                  📄 Add Page
+                </button>
+              </div>
+
+              <div style={{ marginBottom: '20px' }}>
+                <h4 style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '8px', color: '#6b7280' }}>FORM ELEMENTS</h4>
+                <button 
+                  onClick={() => setShowInputModal(true)}
+                  style={{ 
+                    width: '100%', 
+                    padding: '8px', 
+                    marginBottom: '4px',
+                    border: '1px solid #10b981',
+                    background: '#ecfdf5',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    textAlign: 'left'
+                  }}
+                >
+                  Input Field
+                </button>
+                <button 
+                  onClick={() => addUIElement('select', { 
+                    label: 'Dropdown', 
+                    placeholder: 'Select option',
+                    options: ['Option 1', 'Option 2', 'Option 3']
+                  })}
+                  style={{ 
+                    width: '100%', 
+                    padding: '8px', 
+                    marginBottom: '4px',
+                    border: '1px solid #10b981',
+                    background: '#ecfdf5',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    textAlign: 'left'
+                  }}
+                >
+                  Dropdown
+                </button>
+                <button 
+                  onClick={() => addUIElement('radio', { 
+                    label: 'Multiple Choice', 
+                    options: ['Option A', 'Option B', 'Option C'],
+                    name: 'mcq-' + Date.now()
+                  })}
+                  style={{ 
+                    width: '100%', 
+                    padding: '8px', 
+                    marginBottom: '4px',
+                    border: '1px solid #10b981',
+                    background: '#ecfdf5',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    textAlign: 'left'
+                  }}
+                >
+                  Multiple Choice
+                </button>
+                <button 
+                  onClick={() => addUIElement('checkbox', { 
+                    label: 'Checkboxes', 
+                    options: ['Choice 1', 'Choice 2', 'Choice 3']
+                  })}
+                  style={{ 
+                    width: '100%', 
+                    padding: '8px', 
+                    marginBottom: '4px',
+                    border: '1px solid #10b981',
+                    background: '#ecfdf5',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    textAlign: 'left'
+                  }}
+                >
+                  Checkboxes
+                </button>
+                <button 
+                  onClick={() => addUIElement('textarea', { 
+                    label: 'Text Area', 
+                    placeholder: 'Enter long text...',
+                    rows: 4
+                  })}
+                  style={{ 
+                    width: '100%', 
+                    padding: '8px', 
+                    marginBottom: '4px',
+                    border: '1px solid #10b981',
+                    background: '#ecfdf5',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    textAlign: 'left'
+                  }}
+                >
+                  Text Area
+                </button>
+              </div>
+
+              <div style={{ marginBottom: '20px' }}>
+                <h4 style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '8px', color: '#6b7280' }}>UI ELEMENTS</h4>
                 <button 
                   onClick={() => addUIElement('text', { text: 'Heading', fontSize: '24px', fontWeight: 'bold' })}
                   style={{ 
@@ -347,7 +706,7 @@ function App() {
                   Text
                 </button>
                 <button 
-                  onClick={() => addUIElement('button', { text: 'Button' })}
+                  onClick={() => addUIElement('button', { text: 'Submit' })}
                   style={{ 
                     width: '100%', 
                     padding: '8px', 
@@ -375,82 +734,6 @@ function App() {
                   }}
                 >
                   Image
-                </button>
-                <button 
-                  onClick={() => addUIElement('container', { width: '300px', height: '200px' })}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    marginBottom: '4px',
-                    border: '1px solid #d1d5db',
-                    background: 'white',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  Container
-                </button>
-              </div>
-
-              <div style={{ marginBottom: '20px' }}>
-                <h4 style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '8px', color: '#6b7280' }}>FORM ELEMENTS</h4>
-                <button 
-                  onClick={() => addUIElement('input', { 
-                    label: 'Input Field', 
-                    placeholder: 'Enter text',
-                    inputType: 'text'
-                  })}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    marginBottom: '4px',
-                    border: '1px solid #d1d5db',
-                    background: 'white',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  Input Field
-                </button>
-                <button 
-                  onClick={() => addUIElement('input', { 
-                    label: 'Email', 
-                    placeholder: 'Enter email',
-                    inputType: 'email'
-                  })}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    marginBottom: '4px',
-                    border: '1px solid #d1d5db',
-                    background: 'white',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  Email Input
-                </button>
-                <button 
-                  onClick={() => addUIElement('input', { 
-                    label: 'Password', 
-                    placeholder: 'Enter password',
-                    inputType: 'password'
-                  })}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    marginBottom: '4px',
-                    border: '1px solid #d1d5db',
-                    background: 'white',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  Password Input
                 </button>
               </div>
             </>
@@ -497,10 +780,7 @@ function App() {
               <div style={{ marginBottom: '20px' }}>
                 <h4 style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '8px', color: '#6b7280' }}>DATABASE</h4>
                 <button 
-                  onClick={() => addBackendNode('database', { 
-                    tableName: 'new_table', 
-                    columns: ['id', 'name', 'email'] 
-                  })}
+                  onClick={() => addBackendNode('database', {})}
                   style={{ 
                     width: '100%', 
                     padding: '8px', 
@@ -512,7 +792,7 @@ function App() {
                     textAlign: 'left'
                   }}
                 >
-                  SQL Table
+                  Database
                 </button>
               </div>
             </>
@@ -578,6 +858,114 @@ function App() {
           {activeTab === 'design' ? 'Design Canvas - Drag UI elements here' : 'Flow Canvas - Connect elements to backend'}
         </div>
       </div>
+
+      {/* Input Configuration Modal */}
+      {showInputModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000
+        }}>
+          <div style={{
+            background: 'white',
+            padding: '20px',
+            borderRadius: '8px',
+            width: '400px'
+          }}>
+            <h3>Configure Input Field</h3>
+            
+            <div style={{ marginBottom: '15px' }}>
+              <label>Label:</label>
+              <input
+                type="text"
+                value={inputConfig.label}
+                onChange={(e) => setInputConfig(prev => ({ ...prev, label: e.target.value }))}
+                style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+                placeholder="e.g., Username, Email"
+              />
+            </div>
+
+            <div style={{ marginBottom: '15px' }}>
+              <label>Input Type:</label>
+              <select
+                value={inputConfig.inputType}
+                onChange={(e) => setInputConfig(prev => ({ ...prev, inputType: e.target.value }))}
+                style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+              >
+                <option value="text">Text</option>
+                <option value="email">Email</option>
+                <option value="password">Password</option>
+                <option value="number">Number</option>
+                <option value="date">Date</option>
+                <option value="file">File</option>
+              </select>
+            </div>
+
+            <div style={{ marginBottom: '15px' }}>
+              <label>Placeholder:</label>
+              <input
+                type="text"
+                value={inputConfig.placeholder}
+                onChange={(e) => setInputConfig(prev => ({ ...prev, placeholder: e.target.value }))}
+                style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+                placeholder="e.g., Enter your username"
+              />
+            </div>
+
+            <div style={{ marginBottom: '15px' }}>
+              <label>Database Mapping:</label>
+              <input
+                type="text"
+                value={inputConfig.dbMapping}
+                onChange={(e) => setInputConfig(prev => ({ ...prev, dbMapping: e.target.value }))}
+                style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+                placeholder="e.g., users.username, products.name"
+              />
+              <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '2px' }}>
+                Format: table.column (e.g., users.email)
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button
+                onClick={addInputElement}
+                style={{
+                  flex: 1,
+                  padding: '10px',
+                  background: '#10b981',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                Add Input
+              </button>
+              <button
+                onClick={() => setShowInputModal(false)}
+                style={{
+                  flex: 1,
+                  padding: '10px',
+                  background: '#6b7280',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
