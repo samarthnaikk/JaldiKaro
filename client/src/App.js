@@ -11,8 +11,6 @@ import ReactFlow, {
   NodeResizer,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-
-// UI Element Components (Figma-style)
 const ButtonElement = ({ data, selected }) => (
   <div style={{ 
     background: data.backgroundColor || '#3b82f6',
