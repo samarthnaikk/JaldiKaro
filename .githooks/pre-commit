@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Pre-commit hook to scan for vulnerabilities before allowing commits
+# Install this hook by running: npm run setup:hooks
+
+REPORT_FILE="vulnerability-report.json"
+
+# Run vulnerability scan
+npm run audit:check > /dev/null 2>&1
+
+SCAN_EXIT_CODE=$?
+
+# Check if critical vulnerabilities were found
+if [ -f "$REPORT_FILE" ]; then
+    CRITICAL=$(jq '.summary.critical' "$REPORT_FILE" 2>/dev/null || echo "0")
+    
+    if [ "$CRITICAL" -gt 0 ]; then
+        echo ""
+        echo "❌ COMMIT BLOCKED: Critical vulnerabilities detected!"
+        echo "   Critical vulnerabilities: $CRITICAL"
+        echo ""
+        echo "Please run 'npm run audit:fix' to address the issues."
+        echo "Run 'npm run audit:report' for detailed information."
+        echo ""
+        exit 1
+    fi
+fi
+
+# Check for high-severity vulnerabilities and warn
+if [ -f "$REPORT_FILE" ]; then
+    HIGH=$(jq '.summary.high' "$REPORT_FILE" 2>/dev/null || echo "0")
+    TOTAL=$(jq '.summary.totalVulnerabilities' "$REPORT_FILE" 2>/dev/null || echo "0")
+    
+    if [ "$HIGH" -gt 0 ] || [ "$TOTAL" -gt 0 ]; then
+        echo ""
+        echo "⚠️  WARNING: Vulnerabilities detected (Total: $TOTAL, High: $HIGH)"
+        echo "   Consider running 'npm run audit:fix' before committing."
+        echo ""
+    fi
+fi
+
+exit 0

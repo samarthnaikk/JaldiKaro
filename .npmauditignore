@@ -1,0 +1,21 @@
+# npm Audit Ignore List
+# 
+# Use this file to document vulnerabilities that have been reviewed and accepted.
+# Format: package-name:version:vulnerability-id:reason
+#
+# Example:
+# some-package:1.0.0:1234567:This is a false positive - not exploitable in our context
+# another-package:2.0.0:7654321:Upstream package hasn't patched - monitoring for updates
+
+# Add entries below with clear justification
+
+# Format explanation:
+# 1. Package Name: The name of the vulnerable package
+# 2. Version: The specific version with the vulnerability (use * for any version)
+# 3. Vulnerability ID: The CVE ID or npm advisory ID (or * for all)
+# 4. Reason: Why this vulnerability is being ignored (max 100 chars)
+#
+# Example entries (commented out):
+#
+# lodash:*:1234567:Code patterns don't expose vulnerability in our usage
+# express:4.18.0:7654321:Waiting for patch release - deploying workaround in code

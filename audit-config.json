@@ -1,0 +1,127 @@
+{
+  "audit": {
+    "description": "Vulnerability scanning configuration for JaldiKaro",
+    "version": "1.0.0",
+    "enabled": true,
+    "scopes": {
+      "root": {
+        "name": "Root Workspace",
+        "path": ".",
+        "enabled": true,
+        "severity_threshold": "moderate"
+      },
+      "client": {
+        "name": "React Client",
+        "path": "client",
+        "enabled": true,
+        "severity_threshold": "moderate"
+      },
+      "server": {
+        "name": "Express Server",
+        "path": "server",
+        "enabled": true,
+        "severity_threshold": "moderate"
+      }
+    },
+    "severity_levels": {
+      "critical": {
+        "level": 0,
+        "description": "Requires immediate action",
+        "action": "block_deployment",
+        "default_fix": "manual_review"
+      },
+      "high": {
+        "level": 1,
+        "description": "Should be fixed before next release",
+        "action": "warn_on_ci",
+        "default_fix": "auto_update"
+      },
+      "moderate": {
+        "level": 2,
+        "description": "Fix during regular maintenance",
+        "action": "log_only",
+        "default_fix": "monitor"
+      },
+      "low": {
+        "level": 3,
+        "description": "Address when possible",
+        "action": "log_only",
+        "default_fix": "monitor"
+      }
+    },
+    "reporting": {
+      "json_report": "vulnerability-report.json",
+      "log_file": "vulnerability-report.log",
+      "retention_days": 30,
+      "include_metadata": true,
+      "detailed_advisories": true
+    },
+    "automation": {
+      "pre_commit_hook": true,
+      "ci_cd_workflow": true,
+      "scheduled_scan": {
+        "enabled": true,
+        "frequency": "daily",
+        "time": "02:00 UTC"
+      },
+      "auto_fix": {
+        "enabled": false,
+        "for_severity": ["low", "moderate"],
+        "exclude_breaking_changes": true,
+        "create_pull_request": true,
+        "pr_reviewer": ["security-team"]
+      }
+    },
+    "notifications": {
+      "github_pr_comments": true,
+      "github_issue_creation": {
+        "enabled": true,
+        "for_severity": ["critical", "high"]
+      },
+      "slack_webhook": null,
+      "email_notifications": false
+    },
+    "ignore_rules": {
+      "file": ".npmauditignore",
+      "format": "package-name:version:advisory-id:reason",
+      "require_approval": true,
+      "expiration_days": 90
+    },
+    "exclusions": {
+      "dev_dependencies_only": false,
+      "packages": [],
+      "advisory_ids": []
+    },
+    "custom_advisories": [
+      {
+        "package": "example-package",
+        "version": "1.0.0",
+        "severity": "high",
+        "title": "Custom Advisory Example",
+        "description": "Example of custom advisory entry",
+        "recommendation": "Update to version 1.1.0 or later"
+      }
+    ]
+  },
+  "tools": {
+    "npm_audit": {
+      "enabled": true,
+      "version": "latest",
+      "options": "--json"
+    },
+    "snyk": {
+      "enabled": false,
+      "version": "latest",
+      "api_key": null
+    },
+    "trivy": {
+      "enabled": false,
+      "version": "latest"
+    }
+  },
+  "documentation": {
+    "security_file": "SECURITY.md",
+    "contributing_file": "CONTRIBUTING.md",
+    "readme_file": "scripts/README.md"
+  }
+}
