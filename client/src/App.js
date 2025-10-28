@@ -14,6 +14,7 @@ import 'reactflow/dist/style.css';
 
 const style = document.createElement('style');
 style.textContent = `
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 input:hover, textarea:hover, select:hover { box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); transition: all 0.2s ease; }
 @media (max-width: 1024px) {
   [data-sidebar] { width: 200px !important; } 
@@ -764,28 +765,29 @@ const initialNodes = [
 
 const initialEdges = [];
 
-const GenerateBtn = ({ onClick }) => {
+const GenerateBtn = ({ onClick, loading }) => {
   const [h, setH] = useState(false);
   return (
     <button 
       onClick={onClick}
+      disabled={loading}
       onMouseEnter={() => setH(true)}
       onMouseLeave={() => setH(false)}
       style={{ 
         width: '100%', 
         padding: '12px', 
-        background: '#dc2626',
+        background: loading ? '#9ca3af' : '#dc2626',
         color: 'white',
         border: 'none',
         borderRadius: '6px',
         fontWeight: 'bold',
-        cursor: 'pointer',
-        transform: h ? 'scale(1.02)' : 'scale(1)',
-        opacity: h ? 0.9 : 1,
+        cursor: loading ? 'not-allowed' : 'pointer',
+        transform: h && !loading ? 'scale(1.02)' : 'scale(1)',
+        opacity: loading ? 0.7 : (h ? 0.9 : 1),
         transition: 'all 0.2s ease'
       }}
     >
-      Generate Website
+      {loading ? '⏳ Generating...' : 'Generate Website'}
     </button>
   );
 };
@@ -808,12 +810,48 @@ const SidebarBtn = ({ onClick, style, children }) => {
   );
 };
 
+const LoadingOverlay = () => (
+  <div style={{
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: 'rgba(0,0,0,0.5)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 9999
+  }}>
+    <div style={{
+      background: 'white',
+      padding: '30px 40px',
+      borderRadius: '12px',
+      textAlign: 'center',
+      boxShadow: '0 10px 40px rgba(0,0,0,0.3)'
+    }}>
+      <div style={{
+        width: '50px',
+        height: '50px',
+        border: '4px solid #f3f4f6',
+        borderTop: '4px solid #3b82f6',
+        borderRadius: '50%',
+        animation: 'spin 1s linear infinite',
+        margin: '0 auto 15px'
+      }} />
+      <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#374151' }}>Generating Website...</div>
+      <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '8px' }}>Please wait</div>
+    </div>
+  </div>
+);
+
 function App() {
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
   const [selectedNode, setSelectedNode] = useState(null);
-  const [activeTab, setActiveTab] = useState('design'); // 'design' or 'flow'
+  const [activeTab, setActiveTab] = useState('design');
   const [showInputModal, setShowInputModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [inputConfig, setInputConfig] = useState({
     label: '',
     inputType: 'text',
@@ -919,18 +957,17 @@ function App() {
   };
 
   const generateWebsite = async () => {
+    setLoading(true);
     try {
       console.log('🚀 Starting website generation...');
       console.log('Nodes:', nodes);
       console.log('Edges:', edges);
 
-      // Send the nodes and edges directly as the backend expects
       const websiteData = {
         nodes: nodes,
         edges: edges
       };
 
-      // Send to backend
       const response = await fetch('http://localhost:3001/generate', {
         method: 'POST',
         headers: {
@@ -951,6 +988,8 @@ function App() {
     } catch (error) {
       console.error('❌ Error generating website:', error);
       alert('Error generating website. Make sure the backend is running.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -980,7 +1019,9 @@ function App() {
   };
 
   return (
-    <div style={{ height: '100vh', width: '100vw', display: 'flex' }}>
+    <>
+      {loading && <LoadingOverlay />}
+      <div style={{ height: '100vh', width: '100vw', display: 'flex' }}>
       {/* Sidebar */}
       <div data-sidebar style={{ 
         width: '280px', 
@@ -1316,7 +1357,7 @@ function App() {
 
         {/* Generate Button */}
         <div style={{ padding: '20px', borderTop: '1px solid #e2e8f0' }}>
-          <GenerateBtn onClick={generateWebsite} />
+          <GenerateBtn onClick={generateWebsite} loading={loading} />
         </div>
       </div>
 
@@ -1489,6 +1530,7 @@ function App() {
         </div>
       )}
     </div>
+    </>
   );
 }
 
