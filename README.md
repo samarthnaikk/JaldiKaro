@@ -4,7 +4,7 @@
 
 ---
 
-## 🎯 Project Overview
+## Project Overview
 
 JaldiKaro combines the visual design capabilities of tools like Figma with the backend flow orchestration of platforms like n8n, providing a unified canvas for building complete web applications. The platform allows you to:
 
@@ -15,13 +15,13 @@ JaldiKaro combines the visual design capabilities of tools like Figma with the b
 
 ### Key Features
 
-- 🎨 **Visual Design Canvas**: Figma-style drag-and-drop interface for UI elements
-- 📋 **Rich Form Elements**: Input fields, dropdowns, radio buttons, checkboxes, and text areas
-- 🗄️ **Database Integration**: Map form elements to database tables and columns
-- 🔌 **API Flow Builder**: Define backend endpoints and data flows
-- 📊 **Auto-generate Schema**: Automatically create SQL database schemas from form mappings
-- 📄 **Multi-page Support**: Design multiple pages and define navigation flows
-- 📦 **Export Reports**: Generate detailed reports with element specifications and connections
+- **Visual Design Canvas**: Figma-style drag-and-drop interface for UI elements
+- **Rich Form Elements**: Input fields, dropdowns, radio buttons, checkboxes, and text areas
+- **Database Integration**: Map form elements to database tables and columns
+- **API Flow Builder**: Define backend endpoints and data flows
+- **Auto-generate Schema**: Automatically create SQL database schemas from form mappings
+- **Multi-page Support**: Design multiple pages and define navigation flows
+- **Export Reports**: Generate detailed reports with element specifications and connections
 
 ### Technology Stack
 
@@ -40,7 +40,21 @@ JaldiKaro combines the visual design capabilities of tools like Figma with the b
 
 ---
 
-## 🚀 Getting Started
+## Upcoming Features
+
+JaldiKaro is actively evolving. Here are some of the major features planned for upcoming releases:
+
+- **Multi-language coding support**: Generate and manage code in multiple programming languages, enabling broader deployment and customization.
+- **Hosting assistance**: Step-by-step guidance for deploying websites on popular platforms such as Vercel, Netlify, and Render.
+- **Vulnerability checks**: Automated identification and reporting of known vulnerabilities in project dependencies.
+- **Security insights**: Information and recommendations about potential security concerns and best practices for secure deployment.
+- **Offline coding support**: Local code generation and editing powered by LLMs such as Ollama and Hugging Face models, enabling development without an internet connection.
+
+Stay tuned for updates as these features are released!
+
+---
+
+## Getting Started
 
 ### Prerequisites
 
@@ -91,7 +105,7 @@ npm start --prefix server
 
 ---
 
-## 📖 Usage Guide
+## Usage Guide
 
 ### Creating a Website
 
@@ -137,7 +151,7 @@ The generated report includes:
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 JaldiKaro/
@@ -157,7 +171,7 @@ JaldiKaro/
 
 ---
 
-## 🤝 Contributing Guidelines
+## Contributing Guidelines
 
 We welcome contributions to JaldiKaro! Here's how you can help:
 
@@ -204,13 +218,13 @@ Use clear and descriptive commit messages:
 ### Areas for Contribution
 
 We especially welcome contributions in these areas:
-- 🎨 New UI element types (tables, tabs, modals)
-- 🔧 Backend integrations (MongoDB, PostgreSQL, GraphQL)
-- 📊 Enhanced code generation (React components, API routes)
-- 🧪 Testing infrastructure (unit tests, integration tests)
-- 📝 Documentation improvements
-- 🐛 Bug fixes and performance optimizations
-- 🌐 Internationalization (i18n)
+- New UI element types (tables, tabs, modals)
+- Backend integrations (MongoDB, PostgreSQL, GraphQL)
+- Enhanced code generation (React components, API routes)
+- Testing infrastructure (unit tests, integration tests)
+- Documentation improvements
+- Bug fixes and performance optimizations
+- Internationalization (i18n)
 
 ### Reporting Issues
 
@@ -233,7 +247,7 @@ After cloning and installing dependencies:
 
 ---
 
-## 📄 License Information
+## License Information
 
 ### MIT License
 
@@ -267,7 +281,7 @@ This project uses several open-source libraries:
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Built with [React](https://reactjs.org/) and [React Flow](https://reactflow.dev/)
 - Inspired by visual design tools like Figma and no-code platforms like n8n
@@ -275,7 +289,7 @@ This project uses several open-source libraries:
 
 ---
 
-## 📞 Support
+## Support
 
 For questions, suggestions, or issues:
 - **GitHub Issues**: [Create an issue](https://github.com/samarthnaikk/JaldiKaro/issues)
@@ -283,7 +297,7 @@ For questions, suggestions, or issues:
 
 ---
 
-## 🗺️ Roadmap
+## Roadmap
 
 Future enhancements planned:
 - [ ] Real-time collaboration features
@@ -298,6 +312,6 @@ Future enhancements planned:
 
 ---
 
-**Happy Building! 🚀**
+Happy Building!
 
 *JaldiKaro - Build websites quickly, visually, and effortlessly.*
