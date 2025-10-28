@@ -66,7 +66,10 @@ document.head.appendChild(style);
 const ButtonElement = ({ data, selected }) => {
   const [hover, setHover] = useState(false);
   return (
-    <div 
+    <button
+      aria-label={data.text || 'Button'}
+      role="button"
+      tabIndex={0}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{ 
@@ -87,15 +90,15 @@ const ButtonElement = ({ data, selected }) => {
       }}>
       <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
       {data.text || 'Button'}
-    </div>
+    </button>
   );
 };
 
 const InputElement = ({ data, selected }) => (
-  <div style={{ position: 'relative' }}>
+  <div style={{ position: 'relative' }} role="group" aria-labelledby={`label-${data.id}`}>
     <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
     {data.label && (
-      <label style={{ 
+      <label id={`label-${data.id}`} style={{ 
         display: 'block', 
         fontSize: '12px', 
         marginBottom: '4px',
@@ -107,6 +110,8 @@ const InputElement = ({ data, selected }) => (
     <input
       type={data.inputType || 'text'}
       placeholder={data.placeholder || ''}
+      aria-label={data.label || data.placeholder || 'Input field'}
+      aria-required={data.required || false}
       style={{
         width: data.width || '200px',
         height: data.height || '40px',
@@ -841,7 +846,7 @@ const SidebarBtn = ({ onClick, style, children }) => {
 };
 
 const LoadingOverlay = () => (
-  <div style={{
+  <div role="alert" aria-live="polite" aria-busy="true" style={{
     position: 'fixed',
     top: 0,
     left: 0,
@@ -860,7 +865,7 @@ const LoadingOverlay = () => (
       textAlign: 'center',
       boxShadow: '0 10px 40px rgba(0,0,0,0.3)'
     }}>
-      <div style={{
+      <div aria-label="Loading spinner" style={{
         width: '50px',
         height: '50px',
         border: '4px solid #f3f4f6',
@@ -876,7 +881,7 @@ const LoadingOverlay = () => (
 );
 
 const Toast = ({ msg, type, onClose }) => (
-  <div style={{
+  <div role="alert" aria-live="assertive" style={{
     position: 'fixed',
     top: '20px',
     right: '20px',
@@ -898,13 +903,13 @@ const Toast = ({ msg, type, onClose }) => (
 );
 
 const ErrorPage = ({ code = '404', message = 'Page Not Found', onBack }) => (
-  <div className="slide-up" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', background: 'var(--bg)', color: 'var(--text)', textAlign: 'center', padding: '20px' }}>
-    <h1 style={{ fontSize: '120px', fontWeight: '700', margin: '0', color: 'var(--primary)' }}>{code}</h1>
+  <div role="main" className="slide-up" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', background: 'var(--bg)', color: 'var(--text)', textAlign: 'center', padding: '20px' }}>
+    <h1 aria-label={`Error ${code}`} style={{ fontSize: '120px', fontWeight: '700', margin: '0', color: 'var(--primary)' }}>{code}</h1>
     <h2 style={{ fontSize: '24px', fontWeight: '600', margin: '10px 0' }}>{message}</h2>
     <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '30px', maxWidth: '400px' }}>
       {code === '404' ? "The page you're looking for doesn't exist or has been moved." : "Something went wrong. Please try again later."}
     </p>
-    <button onClick={onBack} style={{ padding: '12px 24px', background: 'var(--primary)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
+    <button onClick={onBack} aria-label="Go back to home page" style={{ padding: '12px 24px', background: 'var(--primary)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
       ← Go Back Home
     </button>
   </div>
@@ -1071,7 +1076,17 @@ function App() {
     return (
       <button
         data-tab-button
+        role="tab"
+        aria-selected={active}
+        aria-controls={`${id}-panel`}
+        tabIndex={active ? 0 : -1}
         onClick={() => onClick(id)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onClick(id);
+          }
+        }}
         onMouseEnter={() => setH(true)}
         onMouseLeave={() => setH(false)}
         style={{
@@ -1108,11 +1123,22 @@ function App() {
         flexDirection: 'column'
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px', borderBottom: '1px solid var(--border)' }}>
-          <div style={{ display: 'flex' }}>
+          <div role="tablist" style={{ display: 'flex' }}>
             <TabButton id="design" label="Design" active={activeTab === 'design'} onClick={setActiveTab} />
             <TabButton id="flow" label="Backend Flow" active={activeTab === 'flow'} onClick={setActiveTab} />
           </div>
-          <button onClick={() => setDarkMode(!darkMode)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '20px' }}>
+          <button 
+            onClick={() => setDarkMode(!darkMode)} 
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setDarkMode(!darkMode);
+              }
+            }}
+            aria-label={`Switch to ${darkMode ? 'light' : 'dark'} mode`}
+            aria-pressed={darkMode}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '20px' }}
+          >
             {darkMode ? '☀️' : '🌙'}
           </button>
         </div>
