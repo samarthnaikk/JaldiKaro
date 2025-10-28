@@ -283,6 +283,27 @@ For questions, suggestions, or issues:
 
 ---
 
+## 🔮 Upcoming Features
+
+We're actively developing the following capabilities to enhance JaldiKaro's functionality and make it even more powerful:
+
+### Multi-Language Coding Support
+The system will generate and manage code in multiple known programming languages, allowing you to export your projects in the language and framework of your choice. This flexibility ensures that JaldiKaro can adapt to your preferred tech stack.
+
+### Hosting Assistance
+JaldiKaro will guide users in deploying their websites on popular platforms such as **Vercel**, **Netlify**, or **Render**. This feature will streamline the deployment process, making it easier to take your project from development to production.
+
+### Vulnerability Checks
+The project will be able to identify and report known vulnerabilities in dependencies, helping you maintain secure and up-to-date applications. This automated security scanning will alert you to potential risks before they become problems.
+
+### Security Insights
+JaldiKaro will include information about potential security concerns and best practices for secure deployment. This feature will provide actionable recommendations to help you build more secure web applications from the ground up.
+
+### Offline Coding Support
+The system will enable local coding using LLMs such as **Ollama** and **Hugging Face** models. This offline capability will allow you to continue working on your projects without requiring an internet connection, while still benefiting from AI-assisted development.
+
+---
+
 ## 🗺️ Roadmap
 
 Future enhancements planned:
