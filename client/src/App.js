@@ -383,6 +383,219 @@ const TextareaElement = ({ data, selected }) => (
   </div>
 );
 
+// Date Picker Element
+const DatePickerElement = ({ data, selected }) => (
+  <div style={{ 
+    position: 'relative',
+    resize: data.resizable ? 'both' : 'none',
+    overflow: 'auto',
+    minWidth: '100px',
+    minHeight: '60px'
+  }}>
+    <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
+    {data.label && (
+      <label style={{ 
+        display: 'block', 
+        fontSize: '12px', 
+        marginBottom: '4px',
+        color: data.labelColor || '#374151',
+        fontWeight: data.required ? 'bold' : 'normal'
+      }}>
+        {data.label} {data.required && <span style={{ color: '#ef4444' }}>*</span>}
+      </label>
+    )}
+    <input
+      type="date"
+      placeholder={data.placeholder || ''}
+      min={data.min}
+      max={data.max}
+      style={{
+        width: data.width || '200px',
+        height: data.height || '40px',
+        padding: `${data.paddingY || 8}px ${data.paddingX || 12}px`,
+        border: selected ? '2px solid #ff6b6b' : `1px solid ${data.borderColor || '#d1d5db'}`,
+        borderRadius: data.borderRadius || '4px',
+        fontSize: data.fontSize || '14px',
+        background: data.backgroundColor || 'white'
+      }}
+    />
+    {(data.tableName && data.columnName) && (
+      <div style={{ fontSize: '10px', color: '#8b5cf6', marginTop: '2px' }}>
+        → {data.tableName}.{data.columnName}
+      </div>
+    )}
+  </div>
+);
+
+// Slider (Range) Element
+const SliderElement = ({ data, selected }) => (
+  <div style={{ 
+    position: 'relative',
+    resize: data.resizable ? 'both' : 'none',
+    overflow: 'auto',
+    minWidth: '100px',
+    minHeight: '80px'
+  }}>
+    <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
+    {data.label && (
+      <label style={{ 
+        display: 'block', 
+        fontSize: '12px', 
+        marginBottom: '4px',
+        color: data.labelColor || '#374151',
+        fontWeight: data.required ? 'bold' : 'normal'
+      }}>
+        {data.label} {data.required && <span style={{ color: '#ef4444' }}>*</span>}
+      </label>
+    )}
+    <div style={{
+      border: selected ? '2px solid #ff6b6b' : `1px solid ${data.borderColor || '#d1d5db'}`,
+      borderRadius: data.borderRadius || '4px',
+      padding: '12px',
+      background: data.backgroundColor || 'white'
+    }}>
+      <input
+        type="range"
+        min={data.min || 0}
+        max={data.max || 100}
+        step={data.step || 1}
+        defaultValue={data.defaultValue || 50}
+        style={{
+          width: '100%',
+          accentColor: data.accentColor || '#3b82f6'
+        }}
+      />
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        fontSize: '10px', 
+        color: '#6b7280',
+        marginTop: '4px'
+      }}>
+        <span>{data.min || 0}</span>
+        <span>{data.max || 100}</span>
+      </div>
+    </div>
+    {(data.tableName && data.columnName) && (
+      <div style={{ fontSize: '10px', color: '#8b5cf6', marginTop: '2px' }}>
+        → {data.tableName}.{data.columnName}
+      </div>
+    )}
+  </div>
+);
+
+// Switch (Toggle) Element
+const SwitchElement = ({ data, selected }) => (
+  <div style={{ 
+    position: 'relative',
+    resize: data.resizable ? 'both' : 'none',
+    overflow: 'auto',
+    minWidth: '100px',
+    minHeight: '50px'
+  }}>
+    <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
+    <div style={{
+      border: selected ? '2px solid #ff6b6b' : `1px solid ${data.borderColor || '#d1d5db'}`,
+      borderRadius: data.borderRadius || '4px',
+      padding: '12px',
+      background: data.backgroundColor || 'white',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px'
+    }}>
+      <div style={{
+        position: 'relative',
+        width: '44px',
+        height: '24px',
+        background: data.checked ? (data.activeColor || '#3b82f6') : '#d1d5db',
+        borderRadius: '12px',
+        cursor: 'pointer',
+        transition: 'background 0.3s'
+      }}>
+        <div style={{
+          position: 'absolute',
+          top: '2px',
+          left: data.checked ? '22px' : '2px',
+          width: '20px',
+          height: '20px',
+          background: 'white',
+          borderRadius: '50%',
+          transition: 'left 0.3s',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+        }}></div>
+      </div>
+      {data.label && (
+        <label style={{ 
+          fontSize: '14px',
+          color: data.labelColor || '#374151',
+          fontWeight: data.required ? 'bold' : 'normal',
+          cursor: 'pointer'
+        }}>
+          {data.label} {data.required && <span style={{ color: '#ef4444' }}>*</span>}
+        </label>
+      )}
+    </div>
+    {(data.tableName && data.columnName) && (
+      <div style={{ fontSize: '10px', color: '#8b5cf6', marginTop: '2px' }}>
+        → {data.tableName}.{data.columnName}
+      </div>
+    )}
+  </div>
+);
+
+// Color Picker Element
+const ColorPickerElement = ({ data, selected }) => (
+  <div style={{ 
+    position: 'relative',
+    resize: data.resizable ? 'both' : 'none',
+    overflow: 'auto',
+    minWidth: '100px',
+    minHeight: '70px'
+  }}>
+    <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
+    {data.label && (
+      <label style={{ 
+        display: 'block', 
+        fontSize: '12px', 
+        marginBottom: '4px',
+        color: data.labelColor || '#374151',
+        fontWeight: data.required ? 'bold' : 'normal'
+      }}>
+        {data.label} {data.required && <span style={{ color: '#ef4444' }}>*</span>}
+      </label>
+    )}
+    <div style={{
+      border: selected ? '2px solid #ff6b6b' : `1px solid ${data.borderColor || '#d1d5db'}`,
+      borderRadius: data.borderRadius || '4px',
+      padding: '12px',
+      background: data.backgroundColor || 'white',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px'
+    }}>
+      <input
+        type="color"
+        defaultValue={data.defaultColor || '#3b82f6'}
+        style={{
+          width: '60px',
+          height: '40px',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer'
+        }}
+      />
+      <div style={{ fontSize: '12px', color: '#6b7280' }}>
+        {data.defaultColor || '#3b82f6'}
+      </div>
+    </div>
+    {(data.tableName && data.columnName) && (
+      <div style={{ fontSize: '10px', color: '#8b5cf6', marginTop: '2px' }}>
+        → {data.tableName}.{data.columnName}
+      </div>
+    )}
+  </div>
+);
+
 // Backend Flow Components (n8n-style)
 const APINode = ({ data }) => (
   <div style={{ 
@@ -486,6 +699,10 @@ function App() {
     radioElement: RadioElement,
     checkboxElement: CheckboxElement,
     textareaElement: TextareaElement,
+    datePickerElement: DatePickerElement,
+    sliderElement: SliderElement,
+    switchElement: SwitchElement,
+    colorPickerElement: ColorPickerElement,
     textElement: TextElement,
     imageElement: ImageElement,
     containerElement: ContainerElement,
@@ -764,6 +981,81 @@ function App() {
                   }}
                 >
                   Text Area
+                </button>
+                <button 
+                  onClick={() => addUIElement('datePicker', { 
+                    label: 'Date Picker', 
+                    placeholder: 'Select date'
+                  })}
+                  style={{ 
+                    width: '100%', 
+                    padding: '8px', 
+                    marginBottom: '4px',
+                    border: '1px solid #10b981',
+                    background: '#ecfdf5',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    textAlign: 'left'
+                  }}
+                >
+                  📅 Date Picker
+                </button>
+                <button 
+                  onClick={() => addUIElement('slider', { 
+                    label: 'Slider', 
+                    min: 0,
+                    max: 100,
+                    step: 1,
+                    defaultValue: 50
+                  })}
+                  style={{ 
+                    width: '100%', 
+                    padding: '8px', 
+                    marginBottom: '4px',
+                    border: '1px solid #10b981',
+                    background: '#ecfdf5',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    textAlign: 'left'
+                  }}
+                >
+                  🎚️ Slider
+                </button>
+                <button 
+                  onClick={() => addUIElement('switch', { 
+                    label: 'Toggle Switch',
+                    checked: false
+                  })}
+                  style={{ 
+                    width: '100%', 
+                    padding: '8px', 
+                    marginBottom: '4px',
+                    border: '1px solid #10b981',
+                    background: '#ecfdf5',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    textAlign: 'left'
+                  }}
+                >
+                  🔘 Switch
+                </button>
+                <button 
+                  onClick={() => addUIElement('colorPicker', { 
+                    label: 'Color Picker',
+                    defaultColor: '#3b82f6'
+                  })}
+                  style={{ 
+                    width: '100%', 
+                    padding: '8px', 
+                    marginBottom: '4px',
+                    border: '1px solid #10b981',
+                    background: '#ecfdf5',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    textAlign: 'left'
+                  }}
+                >
+                  🎨 Color Picker
                 </button>
               </div>
 
