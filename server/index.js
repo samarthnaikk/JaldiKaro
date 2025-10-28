@@ -43,7 +43,7 @@ app.post('/generate', (req, res) => {
 
   // Organize nodes by type
   const pages = nodes.filter(node => node.type === 'pageElement');
-  const formElements = nodes.filter(node => ['inputElement', 'enhancedInputElement', 'selectElement', 'radioElement', 'checkboxElement', 'textareaElement', 'numberInputElement', 'fileUploadElement'].includes(node.type));
+  const formElements = nodes.filter(node => ['inputElement', 'enhancedInputElement', 'selectElement', 'radioElement', 'checkboxElement', 'textareaElement', 'datePickerElement', 'sliderElement', 'switchElement', 'colorPickerElement'].includes(node.type));
   const uiElements = nodes.filter(node => ['buttonElement', 'textElement', 'imageElement', 'linkElement'].includes(node.type));
   const apiElements = nodes.filter(node => node.type === 'apiElement');
   const databaseElements = nodes.filter(node => node.type === 'databaseElement');
@@ -216,9 +216,6 @@ app.post('/generate', (req, res) => {
             case 'enhancedInputElement':
               dataType = element.data.placeholder && element.data.placeholder.includes('email') ? 'VARCHAR(255)' : 'VARCHAR(255)';
               break;
-            case 'numberInputElement':
-              dataType = 'INT';
-              break;
             case 'textareaElement':
               dataType = 'TEXT';
               break;
@@ -227,10 +224,17 @@ app.post('/generate', (req, res) => {
               dataType = 'VARCHAR(100)';
               break;
             case 'checkboxElement':
+            case 'switchElement':
               dataType = 'BOOLEAN';
               break;
-            case 'fileUploadElement':
-              dataType = 'VARCHAR(500)'; // Store file path/URL
+            case 'datePickerElement':
+              dataType = 'DATE';
+              break;
+            case 'sliderElement':
+              dataType = 'INT';
+              break;
+            case 'colorPickerElement':
+              dataType = 'VARCHAR(7)'; // Hex color code (#RRGGBB)
               break;
           }
           
