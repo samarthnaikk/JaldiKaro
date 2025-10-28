@@ -4,7 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "concurrently \"npm start --prefix client\" \"npm start --prefix server\"",
-    "postinstall": "npm install --prefix client && npm install --prefix server"
+    "postinstall": "npm install --prefix client && npm install --prefix server",
+    "audit:check": "node scripts/scan-vulnerabilities.js check",
+    "audit:fix": "node scripts/scan-vulnerabilities.js fix",
+    "audit:report": "node scripts/scan-vulnerabilities.js report",
+    "setup:hooks": "node scripts/setup-hooks.js"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
