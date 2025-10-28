@@ -1,16 +1,6 @@
 #!/usr/bin/env node
 
-/**
- * Vulnerability Scanner for JaldiKaro Project
- * 
- * This script scans all project dependencies for known vulnerabilities using npm audit.
- * Generates both console output and a detailed JSON report.
- * 
- * Usage:
- *   npm run audit:check   - Check for vulnerabilities
- *   npm run audit:fix     - Auto-fix vulnerabilities (non-breaking)
- *   npm run audit:report  - Generate detailed vulnerability report
- */
+
 
 const { execSync } = require('child_process');
 const fs = require('fs');

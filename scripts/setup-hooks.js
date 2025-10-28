@@ -1,10 +1,6 @@
 #!/usr/bin/env node
 
-/**
- * Setup script to install git hooks for vulnerability scanning
- * 
- * Run with: npm run setup:hooks
- */
+
 
 const fs = require('fs');
 const path = require('path');
