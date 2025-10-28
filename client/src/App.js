@@ -14,31 +14,51 @@ import 'reactflow/dist/style.css';
 
 const style = document.createElement('style');
 style.textContent = `
-:root { --bg: #fff; --text: #111827; --sidebar: #f8fafc; --border: #e2e8f0; --btn-bg: #3b82f6; --btn-text: #fff; }
-[data-theme="dark"] { --bg: #111827; --text: #f9fafb; --sidebar: #1f2937; --border: #374151; --btn-bg: #3b82f6; --btn-text: #fff; }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: var(--bg); color: var(--text); }
+:root { 
+  --primary: #3b82f6; --secondary: #8b5cf6; --success: #10b981; --error: #ef4444; --warning: #f59e0b;
+  --bg: #fff; --text: #111827; --text-secondary: #6b7280; --sidebar: #f8fafc; --border: #e2e8f0; 
+  --btn-bg: #3b82f6; --btn-text: #fff; 
+  --font-xs: 11px; --font-sm: 13px; --font-base: 14px; --font-lg: 16px; --font-xl: 20px; --font-2xl: 24px;
+}
+[data-theme="dark"] { 
+  --bg: #111827; --text: #f9fafb; --text-secondary: #9ca3af; --sidebar: #1f2937; --border: #374151; 
+  --btn-bg: #3b82f6; --btn-text: #fff; 
+}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+body { background: var(--bg); color: var(--text); transition: background 0.3s ease, color 0.3s ease; }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 input:hover, textarea:hover, select:hover { box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); transition: all 0.2s ease; }
-input:focus, textarea:focus, select:focus { outline: 2px solid #3b82f6; outline-offset: 2px; }
-.error-msg { color: #ef4444; font-size: 11px; margin-top: 4px; animation: slideIn 0.2s ease; }
-h3 { color: #111827 !important; margin: 12px 0 !important; }
-h4 { color: #374151 !important; margin: 8px 0 !important; }
-label { color: #1f2937 !important; margin-bottom: 4px !important; }
-button { font-weight: 500 !important; margin: 4px 0 !important; }
+input:focus, textarea:focus, select:focus { outline: 2px solid var(--primary); outline-offset: 2px; }
+.error-msg { color: var(--error); font-size: var(--font-xs); margin-top: 4px; animation: slideIn 0.2s ease; }
+.fade-in { animation: fadeIn 0.3s ease; }
+.slide-up { animation: slideUp 0.4s ease; }
+h1 { font-size: var(--font-2xl); font-weight: 700; color: var(--text); margin: 16px 0; }
+h2 { font-size: var(--font-xl); font-weight: 600; color: var(--text); margin: 14px 0; }
+h3 { font-size: var(--font-lg); font-weight: 600; color: var(--text); margin: 12px 0; }
+h4 { font-size: var(--font-sm); font-weight: 600; color: var(--text-secondary); margin: 8px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+label { color: var(--text); margin-bottom: 4px; font-size: var(--font-sm); font-weight: 500; }
+button { font-weight: 500; margin: 4px 0; transition: all 0.2s ease; }
+button:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+table th, table td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); }
+table th { background: var(--sidebar); font-weight: 600; color: var(--text); }
+table tr:hover { background: rgba(59, 130, 246, 0.05); }
+table tr:nth-child(even) { background: rgba(0,0,0,0.02); }
 @media (max-width: 1024px) {
   [data-sidebar] { width: 200px !important; }
 }
 @media (max-width: 768px) { 
   [data-sidebar] { width: 100% !important; position: fixed; bottom: 0; height: auto; max-height: 50%; overflow-y: auto; z-index: 1000; border-right: none; border-top: 1px solid var(--border); padding: 10px !important; }
   [data-canvas] { height: 50%; overflow-y: auto; }
-  h3 { font-size: 13px !important; margin: 8px 0 10px 0 !important; }
-  h4 { font-size: 10px !important; margin-bottom: 5px !important; }
+  h1 { font-size: 18px !important; } h2 { font-size: 16px !important; } h3 { font-size: 13px !important; } h4 { font-size: 10px !important; }
   button { padding: 6px 10px !important; font-size: 11px !important; margin: 2px 0 !important; }
   [data-tab-button] { padding: 5px 10px !important; font-size: 10px !important; }
   input, textarea, select { font-size: 16px !important; padding: 8px 6px !important; }
   label { font-size: 11px !important; }
+  table th, table td { padding: 8px; font-size: 12px; }
 }
 `;
 document.head.appendChild(style);
@@ -877,6 +897,19 @@ const Toast = ({ msg, type, onClose }) => (
   </div>
 );
 
+const ErrorPage = ({ code = '404', message = 'Page Not Found', onBack }) => (
+  <div className="slide-up" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', background: 'var(--bg)', color: 'var(--text)', textAlign: 'center', padding: '20px' }}>
+    <h1 style={{ fontSize: '120px', fontWeight: '700', margin: '0', color: 'var(--primary)' }}>{code}</h1>
+    <h2 style={{ fontSize: '24px', fontWeight: '600', margin: '10px 0' }}>{message}</h2>
+    <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '30px', maxWidth: '400px' }}>
+      {code === '404' ? "The page you're looking for doesn't exist or has been moved." : "Something went wrong. Please try again later."}
+    </p>
+    <button onClick={onBack} style={{ padding: '12px 24px', background: 'var(--primary)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
+      ← Go Back Home
+    </button>
+  </div>
+);
+
 function App() {
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
@@ -886,6 +919,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [toast, setToast] = useState(null);
+  const [showError, setShowError] = useState(false);
   const [inputConfig, setInputConfig] = useState({
     label: '',
     inputType: 'text',
@@ -1059,6 +1093,10 @@ function App() {
 
   return (
     <>
+      {showError ? (
+        <ErrorPage code="404" message="Page Not Found" onBack={() => setShowError(false)} />
+      ) : (
+        <>
       {loading && <LoadingOverlay />}
       {toast && <Toast msg={toast.msg} type={toast.type} onClose={() => setToast(null)} />}
       <div data-theme={darkMode ? 'dark' : 'light'} style={{ height: '100vh', width: '100vw', display: 'flex', background: 'var(--bg)' }}>
@@ -1568,6 +1606,8 @@ function App() {
         </div>
       )}
     </div>
+        </>
+      )}
     </>
   );
 }
