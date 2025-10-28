@@ -8,6 +8,7 @@ import ReactFlow, {
   MiniMap,
   Handle,
   Position,
+  NodeResizer,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 
@@ -167,11 +168,18 @@ const PageElement = ({ data, selected }) => (
 const EnhancedInputElement = ({ data, selected }) => (
   <div style={{ 
     position: 'relative',
-    resize: data.resizable ? 'both' : 'none',
-    overflow: 'auto',
+    width: '100%',
+    height: '100%',
     minWidth: '100px',
     minHeight: '60px'
   }}>
+    <NodeResizer 
+      isVisible={selected} 
+      minWidth={100} 
+      minHeight={60}
+      lineStyle={{ borderColor: '#ff6b6b', borderWidth: 2 }}
+      handleStyle={{ background: '#ff6b6b', width: 8, height: 8 }}
+    />
     <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
     {data.label && (
       <label style={{ 
@@ -188,7 +196,7 @@ const EnhancedInputElement = ({ data, selected }) => (
       type={data.inputType || 'text'}
       placeholder={data.placeholder || ''}
       style={{
-        width: data.width || '200px',
+        width: '90%',
         height: data.height || '40px',
         padding: `${data.paddingY || 8}px ${data.paddingX || 12}px`,
         border: selected ? '2px solid #ff6b6b' : `1px solid ${data.borderColor || '#d1d5db'}`,
@@ -209,11 +217,18 @@ const EnhancedInputElement = ({ data, selected }) => (
 const SelectElement = ({ data, selected }) => (
   <div style={{ 
     position: 'relative',
-    resize: data.resizable ? 'both' : 'none',
-    overflow: 'auto',
+    width: '100%',
+    height: '100%',
     minWidth: '100px',
     minHeight: '60px'
   }}>
+    <NodeResizer 
+      isVisible={selected} 
+      minWidth={100} 
+      minHeight={60}
+      lineStyle={{ borderColor: '#ff6b6b', borderWidth: 2 }}
+      handleStyle={{ background: '#ff6b6b', width: 8, height: 8 }}
+    />
     <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
     {data.label && (
       <label style={{ 
@@ -228,7 +243,7 @@ const SelectElement = ({ data, selected }) => (
     )}
     <select
       style={{
-        width: data.width || '200px',
+        width: '90%',
         height: data.height || '40px',
         padding: `${data.paddingY || 8}px ${data.paddingX || 12}px`,
         border: selected ? '2px solid #ff6b6b' : `1px solid ${data.borderColor || '#d1d5db'}`,
@@ -254,10 +269,17 @@ const SelectElement = ({ data, selected }) => (
 const RadioElement = ({ data, selected }) => (
   <div style={{ 
     position: 'relative',
-    resize: data.resizable ? 'both' : 'none',
-    overflow: 'auto',
+    width: '100%',
+    height: '100%',
     minWidth: '100px'
   }}>
+    <NodeResizer 
+      isVisible={selected} 
+      minWidth={100} 
+      minHeight={80}
+      lineStyle={{ borderColor: '#ff6b6b', borderWidth: 2 }}
+      handleStyle={{ background: '#ff6b6b', width: 8, height: 8 }}
+    />
     <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
     {data.label && (
       <label style={{ 
@@ -300,10 +322,17 @@ const RadioElement = ({ data, selected }) => (
 const CheckboxElement = ({ data, selected }) => (
   <div style={{ 
     position: 'relative',
-    resize: data.resizable ? 'both' : 'none',
-    overflow: 'auto',
+    width: '100%',
+    height: '100%',
     minWidth: '100px'
   }}>
+    <NodeResizer 
+      isVisible={selected} 
+      minWidth={100} 
+      minHeight={80}
+      lineStyle={{ borderColor: '#ff6b6b', borderWidth: 2 }}
+      handleStyle={{ background: '#ff6b6b', width: 8, height: 8 }}
+    />
     <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
     {data.label && (
       <label style={{ 
@@ -345,11 +374,18 @@ const CheckboxElement = ({ data, selected }) => (
 const TextareaElement = ({ data, selected }) => (
   <div style={{ 
     position: 'relative',
-    resize: data.resizable ? 'both' : 'none',
-    overflow: 'auto',
+    width: '100%',
+    height: '100%',
     minWidth: '100px',
     minHeight: '80px'
   }}>
+    <NodeResizer 
+      isVisible={selected} 
+      minWidth={100} 
+      minHeight={80}
+      lineStyle={{ borderColor: '#ff6b6b', borderWidth: 2 }}
+      handleStyle={{ background: '#ff6b6b', width: 8, height: 8 }}
+    />
     <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
     {data.label && (
       <label style={{ 
@@ -387,11 +423,18 @@ const TextareaElement = ({ data, selected }) => (
 const DatePickerElement = ({ data, selected }) => (
   <div style={{ 
     position: 'relative',
-    resize: data.resizable ? 'both' : 'none',
-    overflow: 'auto',
+    width: '100%',
+    height: '100%',
     minWidth: '100px',
     minHeight: '60px'
   }}>
+    <NodeResizer 
+      isVisible={selected} 
+      minWidth={100} 
+      minHeight={60}
+      lineStyle={{ borderColor: '#ff6b6b', borderWidth: 2 }}
+      handleStyle={{ background: '#ff6b6b', width: 8, height: 8 }}
+    />
     <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
     {data.label && (
       <label style={{ 
@@ -431,11 +474,18 @@ const DatePickerElement = ({ data, selected }) => (
 const SliderElement = ({ data, selected }) => (
   <div style={{ 
     position: 'relative',
-    resize: data.resizable ? 'both' : 'none',
-    overflow: 'auto',
+    width: '100%',
+    height: '100%',
     minWidth: '100px',
     minHeight: '80px'
   }}>
+    <NodeResizer 
+      isVisible={selected} 
+      minWidth={100} 
+      minHeight={80}
+      lineStyle={{ borderColor: '#ff6b6b', borderWidth: 2 }}
+      handleStyle={{ background: '#ff6b6b', width: 8, height: 8 }}
+    />
     <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
     {data.label && (
       <label style={{ 
@@ -488,11 +538,18 @@ const SliderElement = ({ data, selected }) => (
 const SwitchElement = ({ data, selected }) => (
   <div style={{ 
     position: 'relative',
-    resize: data.resizable ? 'both' : 'none',
-    overflow: 'auto',
+    width: '100%',
+    height: '100%',
     minWidth: '100px',
     minHeight: '50px'
   }}>
+    <NodeResizer 
+      isVisible={selected} 
+      minWidth={100} 
+      minHeight={50}
+      lineStyle={{ borderColor: '#ff6b6b', borderWidth: 2 }}
+      handleStyle={{ background: '#ff6b6b', width: 8, height: 8 }}
+    />
     <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
     <div style={{
       border: selected ? '2px solid #ff6b6b' : `1px solid ${data.borderColor || '#d1d5db'}`,
@@ -547,11 +604,18 @@ const SwitchElement = ({ data, selected }) => (
 const ColorPickerElement = ({ data, selected }) => (
   <div style={{ 
     position: 'relative',
-    resize: data.resizable ? 'both' : 'none',
-    overflow: 'auto',
+    width: '100%',
+    height: '100%',
     minWidth: '100px',
     minHeight: '70px'
   }}>
+    <NodeResizer 
+      isVisible={selected} 
+      minWidth={100} 
+      minHeight={70}
+      lineStyle={{ borderColor: '#ff6b6b', borderWidth: 2 }}
+      handleStyle={{ background: '#ff6b6b', width: 8, height: 8 }}
+    />
     <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
     {data.label && (
       <label style={{ 
