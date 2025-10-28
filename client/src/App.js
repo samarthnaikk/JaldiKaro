@@ -14,22 +14,28 @@ import 'reactflow/dist/style.css';
 
 const style = document.createElement('style');
 style.textContent = `
+:root { --bg: #fff; --text: #111827; --sidebar: #f8fafc; --border: #e2e8f0; --btn-bg: #3b82f6; --btn-text: #fff; }
+[data-theme="dark"] { --bg: #111827; --text: #f9fafb; --sidebar: #1f2937; --border: #374151; --btn-bg: #3b82f6; --btn-text: #fff; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--text); }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 input:hover, textarea:hover, select:hover { box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); transition: all 0.2s ease; }
-h3 { color: #111827 !important; }
-h4 { color: #374151 !important; }
-label { color: #1f2937 !important; }
-button { font-weight: 500 !important; }
+input:focus, textarea:focus, select:focus { outline: 2px solid #3b82f6; outline-offset: 2px; }
+.error-msg { color: #ef4444; font-size: 11px; margin-top: 4px; animation: slideIn 0.2s ease; }
+h3 { color: #111827 !important; margin: 12px 0 !important; }
+h4 { color: #374151 !important; margin: 8px 0 !important; }
+label { color: #1f2937 !important; margin-bottom: 4px !important; }
+button { font-weight: 500 !important; margin: 4px 0 !important; }
 @media (max-width: 1024px) {
-  [data-sidebar] { width: 200px !important; } 
-  h3, h4 { margin: 8px 0 !important; }
+  [data-sidebar] { width: 200px !important; }
 }
 @media (max-width: 768px) { 
-  [data-sidebar] { width: 100% !important; position: fixed; bottom: 0; height: auto; max-height: 50%; overflow-y: auto; z-index: 1000; border-right: none; border-top: 1px solid #e2e8f0; padding: 10px !important; }
+  [data-sidebar] { width: 100% !important; position: fixed; bottom: 0; height: auto; max-height: 50%; overflow-y: auto; z-index: 1000; border-right: none; border-top: 1px solid var(--border); padding: 10px !important; }
   [data-canvas] { height: 50%; overflow-y: auto; }
   h3 { font-size: 13px !important; margin: 8px 0 10px 0 !important; }
   h4 { font-size: 10px !important; margin-bottom: 5px !important; }
-  button { padding: 6px 10px !important; font-size: 11px !important; }
+  button { padding: 6px 10px !important; font-size: 11px !important; margin: 2px 0 !important; }
   [data-tab-button] { padding: 5px 10px !important; font-size: 10px !important; }
   input, textarea, select { font-size: 16px !important; padding: 8px 6px !important; }
   label { font-size: 11px !important; }
@@ -849,6 +855,28 @@ const LoadingOverlay = () => (
   </div>
 );
 
+const Toast = ({ msg, type, onClose }) => (
+  <div style={{
+    position: 'fixed',
+    top: '20px',
+    right: '20px',
+    background: type === 'error' ? '#ef4444' : type === 'success' ? '#10b981' : '#3b82f6',
+    color: 'white',
+    padding: '12px 20px',
+    borderRadius: '8px',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+    zIndex: 10000,
+    animation: 'slideIn 0.3s ease',
+    minWidth: '250px',
+    cursor: 'pointer'
+  }} onClick={onClose}>
+    <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>
+      {type === 'error' ? '❌ Error' : type === 'success' ? '✅ Success' : 'ℹ️ Info'}
+    </div>
+    <div style={{ fontSize: '13px' }}>{msg}</div>
+  </div>
+);
+
 function App() {
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
@@ -856,6 +884,8 @@ function App() {
   const [activeTab, setActiveTab] = useState('design');
   const [showInputModal, setShowInputModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const [toast, setToast] = useState(null);
   const [inputConfig, setInputConfig] = useState({
     label: '',
     inputType: 'text',
@@ -864,6 +894,11 @@ function App() {
     columnName: '',
     required: false
   });
+
+  const showToast = (msg, type = 'info') => {
+    setToast({ msg, type });
+    setTimeout(() => setToast(null), 3000);
+  };
 
   const nodeTypes = useMemo(() => ({
     // Pages
@@ -983,15 +1018,15 @@ function App() {
       if (response.ok) {
         const result = await response.json();
         console.log('✅ Website generation successful:', result);
-        alert(`Website generated successfully! File saved to: ${result.filePath}`);
+        showToast(`Website generated successfully!`, 'success');
       } else {
         const errorText = await response.text();
         console.error('❌ Failed to generate website:', errorText);
-        alert('Failed to generate website. Please try again.');
+        showToast('Failed to generate website. Please try again.', 'error');
       }
     } catch (error) {
       console.error('❌ Error generating website:', error);
-      alert('Error generating website. Make sure the backend is running.');
+      showToast('Error: Make sure backend is running.', 'error');
     } finally {
       setLoading(false);
     }
@@ -1025,33 +1060,23 @@ function App() {
   return (
     <>
       {loading && <LoadingOverlay />}
-      <div style={{ height: '100vh', width: '100vw', display: 'flex' }}>
-      {/* Sidebar */}
+      {toast && <Toast msg={toast.msg} type={toast.type} onClose={() => setToast(null)} />}
+      <div data-theme={darkMode ? 'dark' : 'light'} style={{ height: '100vh', width: '100vw', display: 'flex', background: 'var(--bg)' }}>
       <div data-sidebar style={{ 
         width: '280px', 
-        background: '#f8fafc', 
-        borderRight: '1px solid #e2e8f0',
+        background: 'var(--sidebar)', 
+        borderRight: '1px solid var(--border)',
         display: 'flex',
         flexDirection: 'column'
       }}>
-        {/* Tab Headers */}
-        <div style={{ 
-          display: 'flex', 
-          padding: '10px',
-          borderBottom: '1px solid #e2e8f0'
-        }}>
-          <TabButton 
-            id="design" 
-            label="Design" 
-            active={activeTab === 'design'} 
-            onClick={setActiveTab} 
-          />
-          <TabButton 
-            id="flow" 
-            label="Backend Flow" 
-            active={activeTab === 'flow'} 
-            onClick={setActiveTab} 
-          />
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px', borderBottom: '1px solid var(--border)' }}>
+          <div style={{ display: 'flex' }}>
+            <TabButton id="design" label="Design" active={activeTab === 'design'} onClick={setActiveTab} />
+            <TabButton id="flow" label="Backend Flow" active={activeTab === 'flow'} onClick={setActiveTab} />
+          </div>
+          <button onClick={() => setDarkMode(!darkMode)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '20px' }}>
+            {darkMode ? '☀️' : '🌙'}
+          </button>
         </div>
 
         {/* Tab Content */}
@@ -1434,9 +1459,11 @@ function App() {
                 type="text"
                 value={inputConfig.label}
                 onChange={(e) => setInputConfig(prev => ({ ...prev, label: e.target.value }))}
-                style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+                style={{ width: '100%', padding: '8px', marginTop: '5px', border: '1px solid var(--border)' }}
                 placeholder="e.g., Username, Email"
+                required
               />
+              {!inputConfig.label && <div className="error-msg">Label is required</div>}
             </div>
 
             <div style={{ marginBottom: '15px' }}>
@@ -1502,7 +1529,14 @@ function App() {
 
             <div style={{ display: 'flex', gap: '10px' }}>
               <button
-                onClick={addInputElement}
+                onClick={() => {
+                  if (!inputConfig.label) {
+                    showToast('Label is required', 'error');
+                    return;
+                  }
+                  addInputElement();
+                  showToast('Input field added', 'success');
+                }}
                 style={{
                   flex: 1,
                   padding: '10px',
