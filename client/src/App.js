@@ -11,24 +11,38 @@ import ReactFlow, {
   NodeResizer,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-const ButtonElement = ({ data, selected }) => (
-  <div style={{ 
-    background: data.backgroundColor || '#3b82f6',
-    color: data.textColor || 'white',
-    padding: `${data.paddingY || 10}px ${data.paddingX || 20}px`,
-    borderRadius: data.borderRadius || '6px',
-    border: selected ? '2px solid #ff6b6b' : 'none',
-    cursor: 'pointer',
-    fontSize: data.fontSize || '14px',
-    fontWeight: data.fontWeight || 'normal',
-    minWidth: data.width || 'auto',
-    minHeight: data.height || 'auto',
-    display: 'inline-block'
-  }}>
-    <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
-    {data.text || 'Button'}
-  </div>
-);
+
+const style = document.createElement('style');
+style.textContent = `input:hover, textarea:hover, select:hover { box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); transition: all 0.2s ease; }`;
+document.head.appendChild(style);
+
+const ButtonElement = ({ data, selected }) => {
+  const [hover, setHover] = useState(false);
+  return (
+    <div 
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{ 
+        background: data.backgroundColor || '#3b82f6',
+        color: data.textColor || 'white',
+        padding: `${data.paddingY || 10}px ${data.paddingX || 20}px`,
+        borderRadius: data.borderRadius || '6px',
+        border: selected ? '2px solid #ff6b6b' : 'none',
+        cursor: 'pointer',
+        fontSize: data.fontSize || '14px',
+        fontWeight: data.fontWeight || 'normal',
+        minWidth: data.width || 'auto',
+        minHeight: data.height || 'auto',
+        display: 'inline-block',
+        transform: hover ? 'scale(1.05)' : 'scale(1)',
+        opacity: hover ? 0.8 : 1,
+        transition: 'all 0.2s ease'
+      }}>
+      <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
+      {data.text || 'Button'}
+    </div>
+  );
+};
 
 const InputElement = ({ data, selected }) => (
   <div style={{ position: 'relative' }}>
@@ -734,6 +748,50 @@ const initialNodes = [
 
 const initialEdges = [];
 
+const GenerateBtn = ({ onClick }) => {
+  const [h, setH] = useState(false);
+  return (
+    <button 
+      onClick={onClick}
+      onMouseEnter={() => setH(true)}
+      onMouseLeave={() => setH(false)}
+      style={{ 
+        width: '100%', 
+        padding: '12px', 
+        background: '#dc2626',
+        color: 'white',
+        border: 'none',
+        borderRadius: '6px',
+        fontWeight: 'bold',
+        cursor: 'pointer',
+        transform: h ? 'scale(1.02)' : 'scale(1)',
+        opacity: h ? 0.9 : 1,
+        transition: 'all 0.2s ease'
+      }}
+    >
+      Generate Website
+    </button>
+  );
+};
+
+const SidebarBtn = ({ onClick, style, children }) => {
+  const [h, setH] = useState(false);
+  return (
+    <button 
+      onClick={onClick}
+      onMouseEnter={() => setH(true)}
+      onMouseLeave={() => setH(false)}
+      style={{
+        ...style,
+        opacity: h ? 0.7 : 1,
+        transition: 'opacity 0.2s ease'
+      }}
+    >
+      {children}
+    </button>
+  );
+};
+
 function App() {
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
@@ -880,22 +938,29 @@ function App() {
     }
   };
 
-  const TabButton = ({ id, label, active, onClick }) => (
-    <button
-      onClick={() => onClick(id)}
-      style={{
-        padding: '8px 16px',
-        background: active ? '#3b82f6' : '#f3f4f6',
-        color: active ? 'white' : '#374151',
-        border: 'none',
-        borderRadius: '6px 6px 0 0',
-        cursor: 'pointer',
-        fontWeight: active ? 'bold' : 'normal'
-      }}
-    >
-      {label}
-    </button>
-  );
+  const TabButton = ({ id, label, active, onClick }) => {
+    const [h, setH] = useState(false);
+    return (
+      <button
+        onClick={() => onClick(id)}
+        onMouseEnter={() => setH(true)}
+        onMouseLeave={() => setH(false)}
+        style={{
+          padding: '8px 16px',
+          background: active ? '#3b82f6' : '#f3f4f6',
+          color: active ? 'white' : '#374151',
+          border: 'none',
+          borderRadius: '6px 6px 0 0',
+          cursor: 'pointer',
+          fontWeight: active ? 'bold' : 'normal',
+          opacity: h ? 0.8 : 1,
+          transition: 'opacity 0.2s ease'
+        }}
+      >
+        {label}
+      </button>
+    );
+  };
 
   return (
     <div style={{ height: '100vh', width: '100vw', display: 'flex' }}>
@@ -1234,21 +1299,7 @@ function App() {
 
         {/* Generate Button */}
         <div style={{ padding: '20px', borderTop: '1px solid #e2e8f0' }}>
-          <button 
-            onClick={generateWebsite}
-            style={{ 
-              width: '100%', 
-              padding: '12px', 
-              background: '#dc2626',
-              color: 'white',
-              border: 'none',
-              borderRadius: '6px',
-              fontWeight: 'bold',
-              cursor: 'pointer'
-            }}
-          >
-            Generate Website
-          </button>
+          <GenerateBtn onClick={generateWebsite} />
         </div>
       </div>
 
