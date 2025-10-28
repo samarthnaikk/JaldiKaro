@@ -383,6 +383,125 @@ const TextareaElement = ({ data, selected }) => (
   </div>
 );
 
+// Number Input Element
+const NumberInputElement = ({ data, selected }) => (
+  <div style={{ 
+    position: 'relative',
+    resize: data.resizable ? 'both' : 'none',
+    overflow: 'auto',
+    minWidth: '100px',
+    minHeight: '60px'
+  }}>
+    <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
+    {data.label && (
+      <label style={{ 
+        display: 'block', 
+        fontSize: '12px', 
+        marginBottom: '4px',
+        color: data.labelColor || '#374151',
+        fontWeight: data.required ? 'bold' : 'normal'
+      }}>
+        {data.label} {data.required && <span style={{ color: '#ef4444' }}>*</span>}
+      </label>
+    )}
+    <input
+      type="number"
+      placeholder={data.placeholder || ''}
+      min={data.min}
+      max={data.max}
+      step={data.step || '1'}
+      style={{
+        width: data.width || '200px',
+        height: data.height || '40px',
+        padding: `${data.paddingY || 8}px ${data.paddingX || 12}px`,
+        border: selected ? '2px solid #ff6b6b' : `1px solid ${data.borderColor || '#d1d5db'}`,
+        borderRadius: data.borderRadius || '4px',
+        fontSize: data.fontSize || '14px',
+        background: data.backgroundColor || 'white'
+      }}
+    />
+    {(data.tableName && data.columnName) && (
+      <div style={{ fontSize: '10px', color: '#8b5cf6', marginTop: '2px' }}>
+        → {data.tableName}.{data.columnName}
+      </div>
+    )}
+  </div>
+);
+
+// File Upload Element
+const FileUploadElement = ({ data, selected }) => (
+  <div style={{ 
+    position: 'relative',
+    resize: data.resizable ? 'both' : 'none',
+    overflow: 'auto',
+    minWidth: '100px',
+    minHeight: '80px'
+  }}>
+    <Handle type="source" position={Position.Right} style={{ background: '#ff6b6b' }} />
+    {data.label && (
+      <label style={{ 
+        display: 'block', 
+        fontSize: '12px', 
+        marginBottom: '4px',
+        color: data.labelColor || '#374151',
+        fontWeight: data.required ? 'bold' : 'normal'
+      }}>
+        {data.label} {data.required && <span style={{ color: '#ef4444' }}>*</span>}
+      </label>
+    )}
+    <div style={{
+      border: selected ? '2px solid #ff6b6b' : `1px solid ${data.borderColor || '#d1d5db'}`,
+      borderRadius: data.borderRadius || '4px',
+      padding: '12px',
+      background: data.backgroundColor || 'white',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '8px'
+    }}>
+      <input
+        type="file"
+        accept={data.accept || '*'}
+        multiple={data.multiple || false}
+        style={{
+          display: 'none'
+        }}
+        id={`file-input-${data.id || 'default'}`}
+      />
+      <label 
+        htmlFor={`file-input-${data.id || 'default'}`}
+        style={{
+          padding: '8px 16px',
+          background: '#3b82f6',
+          color: 'white',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          fontSize: '14px',
+          textAlign: 'center',
+          width: '100%'
+        }}
+      >
+        📁 {data.buttonText || 'Choose File'}
+      </label>
+      {data.accept && (
+        <div style={{ fontSize: '10px', color: '#6b7280', textAlign: 'center' }}>
+          Accepts: {data.accept}
+        </div>
+      )}
+      {data.multiple && (
+        <div style={{ fontSize: '10px', color: '#6b7280', fontStyle: 'italic' }}>
+          Multiple files allowed
+        </div>
+      )}
+    </div>
+    {(data.tableName && data.columnName) && (
+      <div style={{ fontSize: '10px', color: '#8b5cf6', marginTop: '2px' }}>
+        → {data.tableName}.{data.columnName}
+      </div>
+    )}
+  </div>
+);
+
 // Backend Flow Components (n8n-style)
 const APINode = ({ data }) => (
   <div style={{ 
@@ -486,6 +605,8 @@ function App() {
     radioElement: RadioElement,
     checkboxElement: CheckboxElement,
     textareaElement: TextareaElement,
+    numberInputElement: NumberInputElement,
+    fileUploadElement: FileUploadElement,
     textElement: TextElement,
     imageElement: ImageElement,
     containerElement: ContainerElement,
@@ -764,6 +885,47 @@ function App() {
                   }}
                 >
                   Text Area
+                </button>
+                <button 
+                  onClick={() => addUIElement('numberInput', { 
+                    label: 'Number Input', 
+                    placeholder: 'Enter a number',
+                    min: 0,
+                    max: 100,
+                    step: 1
+                  })}
+                  style={{ 
+                    width: '100%', 
+                    padding: '8px', 
+                    marginBottom: '4px',
+                    border: '1px solid #10b981',
+                    background: '#ecfdf5',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    textAlign: 'left'
+                  }}
+                >
+                  Number Input
+                </button>
+                <button 
+                  onClick={() => addUIElement('fileUpload', { 
+                    label: 'File Upload', 
+                    buttonText: 'Choose File',
+                    accept: '*',
+                    multiple: false
+                  })}
+                  style={{ 
+                    width: '100%', 
+                    padding: '8px', 
+                    marginBottom: '4px',
+                    border: '1px solid #10b981',
+                    background: '#ecfdf5',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    textAlign: 'left'
+                  }}
+                >
+                  File Upload
                 </button>
               </div>
 
