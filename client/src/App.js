@@ -13,7 +13,23 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 
 const style = document.createElement('style');
-style.textContent = `input:hover, textarea:hover, select:hover { box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); transition: all 0.2s ease; }`;
+style.textContent = `
+input:hover, textarea:hover, select:hover { box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); transition: all 0.2s ease; }
+@media (max-width: 1024px) {
+  [data-sidebar] { width: 200px !important; } 
+  h3, h4 { margin: 8px 0 !important; }
+}
+@media (max-width: 768px) { 
+  [data-sidebar] { width: 100% !important; position: fixed; bottom: 0; height: auto; max-height: 50%; overflow-y: auto; z-index: 1000; border-right: none; border-top: 1px solid #e2e8f0; padding: 10px !important; }
+  [data-canvas] { height: 50%; overflow-y: auto; }
+  h3 { font-size: 13px !important; margin: 8px 0 10px 0 !important; }
+  h4 { font-size: 10px !important; margin-bottom: 5px !important; }
+  button { padding: 6px 10px !important; font-size: 11px !important; }
+  [data-tab-button] { padding: 5px 10px !important; font-size: 10px !important; }
+  input, textarea, select { font-size: 16px !important; padding: 8px 6px !important; }
+  label { font-size: 11px !important; }
+}
+`;
 document.head.appendChild(style);
 
 const ButtonElement = ({ data, selected }) => {
@@ -942,6 +958,7 @@ function App() {
     const [h, setH] = useState(false);
     return (
       <button
+        data-tab-button
         onClick={() => onClick(id)}
         onMouseEnter={() => setH(true)}
         onMouseLeave={() => setH(false)}
@@ -965,7 +982,7 @@ function App() {
   return (
     <div style={{ height: '100vh', width: '100vw', display: 'flex' }}>
       {/* Sidebar */}
-      <div style={{ 
+      <div data-sidebar style={{ 
         width: '280px', 
         background: '#f8fafc', 
         borderRight: '1px solid #e2e8f0',
@@ -1304,7 +1321,7 @@ function App() {
       </div>
 
       {/* Main Canvas */}
-      <div style={{ flex: 1, position: 'relative' }}>
+      <div data-canvas style={{ flex: 1, position: 'relative' }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
