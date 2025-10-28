@@ -16,6 +16,10 @@ const style = document.createElement('style');
 style.textContent = `
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 input:hover, textarea:hover, select:hover { box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); transition: all 0.2s ease; }
+h3 { color: #111827 !important; }
+h4 { color: #374151 !important; }
+label { color: #1f2937 !important; }
+button { font-weight: 500 !important; }
 @media (max-width: 1024px) {
   [data-sidebar] { width: 200px !important; } 
   h3, h4 { margin: 8px 0 !important; }
@@ -1004,7 +1008,7 @@ function App() {
         style={{
           padding: '8px 16px',
           background: active ? '#3b82f6' : '#f3f4f6',
-          color: active ? 'white' : '#374151',
+          color: active ? 'white' : '#111827',
           border: 'none',
           borderRadius: '6px 6px 0 0',
           cursor: 'pointer',
