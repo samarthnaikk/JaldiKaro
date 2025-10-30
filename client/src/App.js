@@ -14,51 +14,283 @@ import 'reactflow/dist/style.css';
 
 const style = document.createElement('style');
 style.textContent = `
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 :root { 
-  --primary: #3b82f6; --secondary: #8b5cf6; --success: #10b981; --error: #ef4444; --warning: #f59e0b;
-  --bg: #fff; --text: #111827; --text-secondary: #6b7280; --sidebar: #f8fafc; --border: #e2e8f0; 
-  --btn-bg: #3b82f6; --btn-text: #fff; 
-  --font-xs: 11px; --font-sm: 13px; --font-base: 14px; --font-lg: 16px; --font-xl: 20px; --font-2xl: 24px;
+  /* Enhanced Color System */
+  --primary: #3b82f6; --primary-light: #60a5fa; --primary-dark: #1d4ed8;
+  --secondary: #8b5cf6; --secondary-light: #a78bfa; --secondary-dark: #6d28d9;
+  --success: #10b981; --success-light: #34d399; --success-dark: #047857;
+  --error: #ef4444; --error-light: #f87171; --error-dark: #dc2626;
+  --warning: #f59e0b; --warning-light: #fbbf24; --warning-dark: #d97706;
+  --info: #06b6d4; --info-light: #22d3ee; --info-dark: #0891b2;
+  
+  /* Professional Light Theme */
+  --bg: #ffffff; --bg-secondary: #f8fafc; --bg-tertiary: #f1f5f9;
+  --text: #0f172a; --text-secondary: #64748b; --text-tertiary: #94a3b8;
+  --sidebar: #ffffff; --sidebar-border: #e2e8f0; 
+  --border: #e2e8f0; --border-light: #f1f5f9; --border-dark: #cbd5e1;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05); 
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  /* Enhanced Typography */
+  --font-xs: 12px; --font-sm: 14px; --font-base: 16px; --font-lg: 18px; 
+  --font-xl: 20px; --font-2xl: 24px; --font-3xl: 30px; --font-4xl: 36px;
+  --line-height-tight: 1.25; --line-height-normal: 1.5; --line-height-relaxed: 1.75;
+  
+  /* Enhanced Spacing */
+  --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
+  --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
+  --space-12: 3rem; --space-16: 4rem; --space-20: 5rem;
+  
+  /* Border Radius */
+  --radius-sm: 0.125rem; --radius: 0.25rem; --radius-md: 0.375rem; 
+  --radius-lg: 0.5rem; --radius-xl: 0.75rem; --radius-2xl: 1rem; --radius-full: 9999px;
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease-out; --transition: 0.2s ease-out; --transition-slow: 0.3s ease-out;
 }
+
 [data-theme="dark"] { 
-  --bg: #111827; --text: #f9fafb; --text-secondary: #9ca3af; --sidebar: #1f2937; --border: #374151; 
-  --btn-bg: #3b82f6; --btn-text: #fff; 
+  /* Professional Dark Theme */
+  --bg: #0f172a; --bg-secondary: #1e293b; --bg-tertiary: #334155;
+  --text: #f8fafc; --text-secondary: #cbd5e1; --text-tertiary: #94a3b8;
+  --sidebar: #1e293b; --sidebar-border: #334155;
+  --border: #334155; --border-light: #475569; --border-dark: #1e293b;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3); 
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
 }
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
-body { background: var(--bg); color: var(--text); transition: background 0.3s ease, color 0.3s ease; }
+
+/* Enhanced Base Styles with Performance Optimization */
+*, *::before, *::after { 
+  margin: 0; padding: 0; box-sizing: border-box; 
+}
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body { 
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  background: var(--bg); color: var(--text); 
+  transition: background var(--transition-slow), color var(--transition-slow);
+  line-height: var(--line-height-normal);
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Professional Animation Library */
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-input:hover, textarea:hover, select:hover { box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); transition: all 0.2s ease; }
-input:focus, textarea:focus, select:focus { outline: 2px solid var(--primary); outline-offset: 2px; }
-.error-msg { color: var(--error); font-size: var(--font-xs); margin-top: 4px; animation: slideIn 0.2s ease; }
-.fade-in { animation: fadeIn 0.3s ease; }
-.slide-up { animation: slideUp 0.4s ease; }
-h1 { font-size: var(--font-2xl); font-weight: 700; color: var(--text); margin: 16px 0; }
-h2 { font-size: var(--font-xl); font-weight: 600; color: var(--text); margin: 14px 0; }
-h3 { font-size: var(--font-lg); font-weight: 600; color: var(--text); margin: 12px 0; }
-h4 { font-size: var(--font-sm); font-weight: 600; color: var(--text-secondary); margin: 8px 0; text-transform: uppercase; letter-spacing: 0.5px; }
-label { color: var(--text); margin-bottom: 4px; font-size: var(--font-sm); font-weight: 500; }
-button { font-weight: 500; margin: 4px 0; transition: all 0.2s ease; }
-button:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-table { width: 100%; border-collapse: collapse; margin: 16px 0; }
-table th, table td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); }
-table th { background: var(--sidebar); font-weight: 600; color: var(--text); }
-table tr:hover { background: rgba(59, 130, 246, 0.05); }
-table tr:nth-child(even) { background: rgba(0,0,0,0.02); }
-@media (max-width: 1024px) {
-  [data-sidebar] { width: 200px !important; }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideInLeft { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes slideInRight { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+
+/* Enhanced Interactive Elements */
+.interactive { 
+  cursor: pointer; transition: all var(--transition); 
+  transform-origin: center; will-change: transform, box-shadow;
 }
+.interactive:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.interactive:active { transform: translateY(0); box-shadow: var(--shadow); }
+
+/* Enhanced Form Elements */
+input, textarea, select { 
+  width: 100%; padding: var(--space-3) var(--space-4); 
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  background: var(--bg); color: var(--text); font-size: var(--font-sm);
+  transition: all var(--transition); font-family: inherit;
+}
+input:hover, textarea:hover, select:hover { 
+  border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); 
+}
+input:focus, textarea:focus, select:focus { 
+  outline: none; border-color: var(--primary); 
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); 
+}
+input:disabled, textarea:disabled, select:disabled {
+  opacity: 0.6; cursor: not-allowed; background: var(--bg-secondary);
+}
+
+/* Professional Button System */
+.btn { 
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  padding: var(--space-3) var(--space-6); border: none; border-radius: var(--radius-md);
+  font-size: var(--font-sm); font-weight: 500; font-family: inherit;
+  cursor: pointer; transition: all var(--transition); text-decoration: none;
+  position: relative; overflow: hidden; user-select: none;
+}
+.btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
+
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover:not(:disabled) { background: var(--primary-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+.btn-secondary { background: var(--bg-secondary); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover:not(:disabled) { background: var(--bg-tertiary); border-color: var(--border-dark); }
+
+.btn-success { background: var(--success); color: white; }
+.btn-success:hover:not(:disabled) { background: var(--success-dark); }
+
+.btn-error { background: var(--error); color: white; }
+.btn-error:hover:not(:disabled) { background: var(--error-dark); }
+
+.btn-ghost { background: transparent; color: var(--text-secondary); }
+.btn-ghost:hover:not(:disabled) { background: var(--bg-secondary); color: var(--text); }
+
+.btn-sm { padding: var(--space-2) var(--space-4); font-size: var(--font-xs); }
+.btn-lg { padding: var(--space-4) var(--space-8); font-size: var(--font-lg); }
+
+/* Enhanced Typography */
+h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: var(--line-height-tight); margin: 0; }
+h1 { font-size: var(--font-3xl); color: var(--text); }
+h2 { font-size: var(--font-2xl); color: var(--text); }
+h3 { font-size: var(--font-xl); color: var(--text); }
+h4 { font-size: var(--font-lg); color: var(--text-secondary); font-weight: 500; }
+h5 { font-size: var(--font-base); color: var(--text-secondary); font-weight: 500; }
+h6 { font-size: var(--font-sm); color: var(--text-tertiary); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+
+p { line-height: var(--line-height-relaxed); color: var(--text-secondary); }
+label { color: var(--text); font-size: var(--font-sm); font-weight: 500; display: block; margin-bottom: var(--space-1); }
+
+/* Professional Card System */
+.card { 
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm); transition: all var(--transition);
+}
+.card:hover { box-shadow: var(--shadow-md); border-color: var(--border-dark); }
+.card-header { padding: var(--space-6); border-bottom: 1px solid var(--border); }
+.card-body { padding: var(--space-6); }
+.card-footer { padding: var(--space-6); border-top: 1px solid var(--border); background: var(--bg-secondary); }
+
+/* Enhanced Tables */
+table { width: 100%; border-collapse: collapse; border-spacing: 0; }
+table th, table td { 
+  padding: var(--space-4); text-align: left; border-bottom: 1px solid var(--border-light);
+  font-size: var(--font-sm);
+}
+table th { 
+  background: var(--bg-secondary); font-weight: 600; color: var(--text-secondary);
+  position: sticky; top: 0; z-index: 10;
+}
+table tbody tr:hover { background: var(--bg-secondary); }
+table tbody tr:nth-child(even) { background: rgba(0,0,0,0.02); }
+[data-theme="dark"] table tbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+
+/* Utility Classes */
+.fade-in { animation: fadeIn var(--transition-slow) ease; }
+.fade-in-up { animation: fadeInUp var(--transition-slow) ease; }
+.fade-in-down { animation: fadeInDown var(--transition-slow) ease; }
+.slide-in-left { animation: slideInLeft var(--transition-slow) ease; }
+.slide-in-right { animation: slideInRight var(--transition-slow) ease; }
+.scale-in { animation: scaleIn var(--transition) ease; }
+.float { animation: float 3s ease-in-out infinite; }
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+.font-mono { font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace; }
+
+/* Loading States */
+.loading { position: relative; overflow: hidden; }
+.loading::after {
+  content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shimmer 1.5s infinite;
+}
+@keyframes shimmer { 0% { left: -100%; } 100% { left: 100%; } }
+
+/* Accessibility Enhancements */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
+.focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+/* Enhanced Scrollbars */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { background: var(--border-dark); border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+
+/* Enhanced Responsive Design */
+@media (max-width: 1280px) {
+  [data-sidebar] { width: 260px !important; }
+  .btn { padding: var(--space-2) var(--space-4); font-size: var(--font-xs); }
+}
+
+@media (max-width: 1024px) {
+  [data-sidebar] { width: 240px !important; }
+  h1 { font-size: var(--font-2xl) !important; }
+  h2 { font-size: var(--font-xl) !important; }
+  h3 { font-size: var(--font-lg) !important; }
+  .card { margin: var(--space-4); }
+}
+
 @media (max-width: 768px) { 
-  [data-sidebar] { width: 100% !important; position: fixed; bottom: 0; height: auto; max-height: 50%; overflow-y: auto; z-index: 1000; border-right: none; border-top: 1px solid var(--border); padding: 10px !important; }
-  [data-canvas] { height: 50%; overflow-y: auto; }
-  h1 { font-size: 18px !important; } h2 { font-size: 16px !important; } h3 { font-size: 13px !important; } h4 { font-size: 10px !important; }
-  button { padding: 6px 10px !important; font-size: 11px !important; margin: 2px 0 !important; }
-  [data-tab-button] { padding: 5px 10px !important; font-size: 10px !important; }
-  input, textarea, select { font-size: 16px !important; padding: 8px 6px !important; }
-  label { font-size: 11px !important; }
-  table th, table td { padding: 8px; font-size: 12px; }
+  :root { --font-xs: 11px; --font-sm: 12px; --font-base: 14px; --font-lg: 16px; }
+  
+  [data-sidebar] { 
+    width: 100% !important; position: fixed; bottom: 0; left: 0; right: 0;
+    height: auto; max-height: 60vh; overflow-y: auto; z-index: 1000;
+    border-right: none; border-top: 1px solid var(--border); 
+    padding: var(--space-4) !important; background: var(--sidebar);
+    box-shadow: var(--shadow-xl); border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  }
+  
+  [data-canvas] { height: 40vh; overflow: hidden; }
+  
+  .btn { padding: var(--space-2) var(--space-3); font-size: var(--font-xs); }
+  [data-tab-button] { padding: var(--space-2) var(--space-3); font-size: var(--font-xs); }
+  
+  input, textarea, select { 
+    font-size: 16px !important; padding: var(--space-3); 
+    -webkit-appearance: none; border-radius: var(--radius-md);
+  }
+  
+  h1 { font-size: var(--font-xl) !important; }
+  h2 { font-size: var(--font-lg) !important; }
+  h3 { font-size: var(--font-base) !important; }
+  h4 { font-size: var(--font-sm) !important; }
+  
+  table th, table td { padding: var(--space-2); font-size: var(--font-xs); }
+  .card { margin: var(--space-2); border-radius: var(--radius-md); }
+  .card-body, .card-header, .card-footer { padding: var(--space-4); }
+}
+
+@media (max-width: 480px) {
+  [data-sidebar] { max-height: 70vh; padding: var(--space-3) !important; }
+  [data-canvas] { height: 30vh; }
+  .btn { padding: var(--space-1) var(--space-2); }
+  h1 { font-size: var(--font-lg) !important; }
+  h2 { font-size: var(--font-base) !important; }
+  input, textarea, select { padding: var(--space-2); }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  :root {
+    --border: #000000; --border-light: #333333; --border-dark: #000000;
+    --text-secondary: #000000; --text-tertiary: #333333;
+  }
+  [data-theme="dark"] {
+    --border: #ffffff; --border-light: #cccccc; --border-dark: #ffffff;
+    --text-secondary: #ffffff; --text-tertiary: #cccccc;
+  }
+}
+
+/* Print Styles */
+@media print {
+  * { background: white !important; color: black !important; box-shadow: none !important; }
+  [data-sidebar] { display: none !important; }
+  [data-canvas] { width: 100% !important; height: auto !important; }
 }
 `;
 document.head.appendChild(style);
@@ -1075,6 +1307,7 @@ function App() {
     const [h, setH] = useState(false);
     return (
       <button
+        className={`btn ${active ? 'btn-primary' : 'btn-ghost'} fade-in`}
         data-tab-button
         role="tab"
         aria-selected={active}
@@ -1090,18 +1323,28 @@ function App() {
         onMouseEnter={() => setH(true)}
         onMouseLeave={() => setH(false)}
         style={{
-          padding: '8px 16px',
-          background: active ? '#3b82f6' : '#f3f4f6',
-          color: active ? 'white' : '#111827',
+          borderRadius: 'var(--radius-lg) var(--radius-lg) 0 0',
+          fontWeight: active ? '600' : '500',
+          fontSize: 'var(--font-sm)',
+          padding: 'var(--space-3) var(--space-6)',
+          transform: h && !active ? 'translateY(-2px)' : 'translateY(0)',
+          transition: 'all var(--transition)',
           border: 'none',
-          borderRadius: '6px 6px 0 0',
-          cursor: 'pointer',
-          fontWeight: active ? 'bold' : 'normal',
-          opacity: h ? 0.8 : 1,
-          transition: 'opacity 0.2s ease'
+          position: 'relative'
         }}
       >
         {label}
+        {active && (
+          <div style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: '2px',
+            background: 'var(--primary)',
+            borderRadius: 'var(--radius-full)'
+          }} />
+        )}
       </button>
     );
   };
@@ -1114,20 +1357,60 @@ function App() {
         <>
       {loading && <LoadingOverlay />}
       {toast && <Toast msg={toast.msg} type={toast.type} onClose={() => setToast(null)} />}
-      <div data-theme={darkMode ? 'dark' : 'light'} style={{ height: '100vh', width: '100vw', display: 'flex', background: 'var(--bg)' }}>
-      <div data-sidebar style={{ 
-        width: '280px', 
+      <div 
+        data-theme={darkMode ? 'dark' : 'light'} 
+        className="fade-in"
+        style={{ 
+          height: '100vh', 
+          width: '100vw', 
+          display: 'flex', 
+          background: 'var(--bg)',
+          fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif"
+        }}
+      >
+      <div data-sidebar className="slide-in-left" style={{ 
+        width: '320px', 
         background: 'var(--sidebar)', 
         borderRight: '1px solid var(--border)',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        boxShadow: 'var(--shadow-md)',
+        zIndex: 10
       }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px', borderBottom: '1px solid var(--border)' }}>
-          <div role="tablist" style={{ display: 'flex' }}>
-            <TabButton id="design" label="Design" active={activeTab === 'design'} onClick={setActiveTab} />
-            <TabButton id="flow" label="Backend Flow" active={activeTab === 'flow'} onClick={setActiveTab} />
+        {/* Enhanced Header */}
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          padding: 'var(--space-4)', 
+          borderBottom: '1px solid var(--border)',
+          background: 'var(--bg)',
+          position: 'sticky',
+          top: 0,
+          zIndex: 20
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
+            <div style={{ 
+              fontSize: 'var(--font-lg)', 
+              fontWeight: '700', 
+              color: 'var(--primary)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 'var(--space-2)'
+            }}>
+              <div style={{
+                width: '8px',
+                height: '8px',
+                background: 'var(--success)',
+                borderRadius: 'var(--radius-full)',
+                animation: 'pulse 2s infinite'
+              }} />
+              JaldiKaro
+            </div>
           </div>
+          
           <button 
+            className="btn btn-ghost btn-sm interactive"
             onClick={() => setDarkMode(!darkMode)} 
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
@@ -1137,325 +1420,385 @@ function App() {
             }}
             aria-label={`Switch to ${darkMode ? 'light' : 'dark'} mode`}
             aria-pressed={darkMode}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '20px' }}
+            style={{ 
+              fontSize: 'var(--font-lg)',
+              borderRadius: 'var(--radius-full)',
+              width: '40px',
+              height: '40px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
           >
             {darkMode ? '☀️' : '🌙'}
           </button>
         </div>
 
-        {/* Tab Content */}
-        <div style={{ flex: 1, padding: '20px', overflowY: 'auto' }}>
+        {/* Enhanced Tab Navigation */}
+        <div role="tablist" style={{ 
+          display: 'flex', 
+          padding: 'var(--space-4) var(--space-4) 0',
+          background: 'var(--bg-secondary)',
+          borderBottom: '1px solid var(--border)'
+        }}>
+          <TabButton id="design" label="Design" active={activeTab === 'design'} onClick={setActiveTab} />
+          <TabButton id="flow" label="Backend Flow" active={activeTab === 'flow'} onClick={setActiveTab} />
+        </div>
+
+        {/* Enhanced Tab Content */}
+        <div style={{ 
+          flex: 1, 
+          padding: 'var(--space-6)', 
+          overflowY: 'auto',
+          background: 'var(--bg)'
+        }}>
           {activeTab === 'design' && (
-            <>
-              <h3 style={{ margin: '0 0 15px 0', fontSize: '16px' }}>Pages & Elements</h3>
+            <div className="fade-in-up" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+              <div>
+                <h3 style={{ 
+                  margin: '0 0 var(--space-4) 0', 
+                  fontSize: 'var(--font-xl)',
+                  fontWeight: '700',
+                  color: 'var(--text)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 'var(--space-2)'
+                }}>
+                  <span style={{
+                    width: '4px',
+                    height: '20px',
+                    background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
+                    borderRadius: 'var(--radius-full)'
+                  }} />
+                  Design Elements
+                </h3>
+              </div>
               
-              <div style={{ marginBottom: '20px' }}>
-                <h4 style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '8px', color: '#6b7280' }}>PAGES</h4>
-                <button 
-                  onClick={() => addUIElement('page', { pageName: 'New Page', width: '600px', height: '400px' })}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    marginBottom: '4px',
-                    border: '1px solid #3b82f6',
-                    background: '#eff6ff',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  📄 Add Page
-                </button>
+              {/* Pages Section */}
+              <div className="card">
+                <div className="card-header" style={{ padding: 'var(--space-4)' }}>
+                  <h6 style={{ margin: 0, color: 'var(--text-secondary)' }}>Pages</h6>
+                </div>
+                <div className="card-body" style={{ padding: 'var(--space-4)' }}>
+                  <button 
+                    className="btn btn-primary interactive fade-in"
+                    onClick={() => addUIElement('page', { pageName: 'New Page', width: '600px', height: '400px' })}
+                    style={{ 
+                      width: '100%',
+                      justifyContent: 'flex-start',
+                      gap: 'var(--space-3)',
+                      background: 'linear-gradient(135deg, var(--primary), var(--primary-light))',
+                    }}
+                  >
+                    📄 Add New Page
+                  </button>
+                </div>
               </div>
 
-              <div style={{ marginBottom: '20px' }}>
-                <h4 style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '8px', color: '#6b7280' }}>FORM ELEMENTS</h4>
-                <button 
-                  onClick={() => setShowInputModal(true)}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    marginBottom: '4px',
-                    border: '1px solid #10b981',
-                    background: '#ecfdf5',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  Input Field
-                </button>
-                <button 
-                  onClick={() => addUIElement('select', { 
-                    label: 'Dropdown', 
-                    placeholder: 'Select option',
-                    options: ['Option 1', 'Option 2', 'Option 3']
-                  })}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    marginBottom: '4px',
-                    border: '1px solid #10b981',
-                    background: '#ecfdf5',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  Dropdown
-                </button>
-                <button 
-                  onClick={() => addUIElement('radio', { 
-                    label: 'Multiple Choice', 
-                    options: ['Option A', 'Option B', 'Option C'],
-                    name: 'mcq-' + Date.now()
-                  })}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    marginBottom: '4px',
-                    border: '1px solid #10b981',
-                    background: '#ecfdf5',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  Multiple Choice
-                </button>
-                <button 
-                  onClick={() => addUIElement('checkbox', { 
-                    label: 'Checkboxes', 
-                    options: ['Choice 1', 'Choice 2', 'Choice 3']
-                  })}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    marginBottom: '4px',
-                    border: '1px solid #10b981',
-                    background: '#ecfdf5',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  Checkboxes
-                </button>
-                <button 
-                  onClick={() => addUIElement('textarea', { 
-                    label: 'Text Area', 
-                    placeholder: 'Enter long text...',
-                    rows: 4
-                  })}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    marginBottom: '4px',
-                    border: '1px solid #10b981',
-                    background: '#ecfdf5',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  Text Area
-                </button>
-                <button 
-                  onClick={() => addUIElement('datePicker', { 
-                    label: 'Date Picker', 
-                    placeholder: 'Select date'
-                  })}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    marginBottom: '4px',
-                    border: '1px solid #10b981',
-                    background: '#ecfdf5',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  📅 Date Picker
-                </button>
-                <button 
-                  onClick={() => addUIElement('slider', { 
-                    label: 'Slider', 
-                    min: 0,
-                    max: 100,
-                    step: 1,
-                    defaultValue: 50
-                  })}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    marginBottom: '4px',
-                    border: '1px solid #10b981',
-                    background: '#ecfdf5',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  🎚️ Slider
-                </button>
-                <button 
-                  onClick={() => addUIElement('switch', { 
-                    label: 'Toggle Switch',
-                    checked: false
-                  })}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    marginBottom: '4px',
-                    border: '1px solid #10b981',
-                    background: '#ecfdf5',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  🔘 Switch
-                </button>
-                <button 
-                  onClick={() => addUIElement('colorPicker', { 
-                    label: 'Color Picker',
-                    defaultColor: '#3b82f6'
-                  })}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    marginBottom: '4px',
-                    border: '1px solid #10b981',
-                    background: '#ecfdf5',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  🎨 Color Picker
-                </button>
+              {/* Form Elements Section */}
+              <div className="card">
+                <div className="card-header" style={{ padding: 'var(--space-4)' }}>
+                  <h6 style={{ margin: 0, color: 'var(--text-secondary)' }}>Form Elements</h6>
+                </div>
+                <div className="card-body" style={{ padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+                  <button 
+                    className="btn btn-secondary interactive"
+                    onClick={() => setShowInputModal(true)}
+                    style={{ 
+                      width: '100%',
+                      justifyContent: 'flex-start',
+                      gap: 'var(--space-3)',
+                      background: 'linear-gradient(135deg, var(--success), var(--success-light))',
+                      color: 'white'
+                    }}
+                  >
+                    📝 Input Field
+                  </button>
+                  <button 
+                    className="btn btn-secondary interactive"
+                    onClick={() => addUIElement('select', { 
+                      label: 'Dropdown', 
+                      placeholder: 'Select option',
+                      options: ['Option 1', 'Option 2', 'Option 3']
+                    })}
+                    style={{ 
+                      width: '100%',
+                      justifyContent: 'flex-start',
+                      gap: 'var(--space-3)',
+                      background: 'linear-gradient(135deg, var(--success), var(--success-light))',
+                      color: 'white'
+                    }}
+                  >
+                    📋 Dropdown
+                  </button>
+                  <button 
+                    className="btn btn-secondary interactive"
+                    onClick={() => addUIElement('radio', { 
+                      label: 'Multiple Choice', 
+                      options: ['Option A', 'Option B', 'Option C'],
+                      name: 'mcq-' + Date.now()
+                    })}
+                    style={{ 
+                      width: '100%',
+                      justifyContent: 'flex-start',
+                      gap: 'var(--space-3)',
+                      background: 'linear-gradient(135deg, var(--success), var(--success-light))',
+                      color: 'white'
+                    }}
+                  >
+                    ⚪ Multiple Choice
+                  </button>
+                  <button 
+                    className="btn btn-secondary interactive"
+                    onClick={() => addUIElement('checkbox', { 
+                      label: 'Checkboxes', 
+                      options: ['Choice 1', 'Choice 2', 'Choice 3']
+                    })}
+                    style={{ 
+                      width: '100%',
+                      justifyContent: 'flex-start',
+                      gap: 'var(--space-3)',
+                      background: 'linear-gradient(135deg, var(--success), var(--success-light))',
+                      color: 'white'
+                    }}
+                  >
+                    ☑️ Checkboxes
+                  </button>
+                  <button 
+                    className="btn btn-secondary interactive"
+                    onClick={() => addUIElement('textarea', { 
+                      label: 'Text Area', 
+                      placeholder: 'Enter long text...',
+                      rows: 4
+                    })}
+                    style={{ 
+                      width: '100%',
+                      justifyContent: 'flex-start',
+                      gap: 'var(--space-3)',
+                      background: 'linear-gradient(135deg, var(--success), var(--success-light))',
+                      color: 'white'
+                    }}
+                  >
+                    📄 Text Area
+                  </button>
+                  <button 
+                    className="btn btn-secondary interactive"
+                    onClick={() => addUIElement('datePicker', { 
+                      label: 'Date Picker', 
+                      placeholder: 'Select date'
+                    })}
+                    style={{ 
+                      width: '100%',
+                      justifyContent: 'flex-start',
+                      gap: 'var(--space-3)',
+                      background: 'linear-gradient(135deg, var(--success), var(--success-light))',
+                      color: 'white'
+                    }}
+                  >
+                    📅 Date Picker
+                  </button>
+                  <button 
+                    className="btn btn-secondary interactive"
+                    onClick={() => addUIElement('slider', { 
+                      label: 'Slider', 
+                      min: 0,
+                      max: 100,
+                      step: 1,
+                      defaultValue: 50
+                    })}
+                    style={{ 
+                      width: '100%',
+                      justifyContent: 'flex-start',
+                      gap: 'var(--space-3)',
+                      background: 'linear-gradient(135deg, var(--success), var(--success-light))',
+                      color: 'white'
+                    }}
+                  >
+                    🎚️ Slider
+                  </button>
+                  <button 
+                    className="btn btn-secondary interactive"
+                    onClick={() => addUIElement('switch', { 
+                      label: 'Toggle Switch',
+                      checked: false
+                    })}
+                    style={{ 
+                      width: '100%',
+                      justifyContent: 'flex-start',
+                      gap: 'var(--space-3)',
+                      background: 'linear-gradient(135deg, var(--success), var(--success-light))',
+                      color: 'white'
+                    }}
+                  >
+                    🔘 Toggle Switch
+                  </button>
+                  <button 
+                    className="btn btn-secondary interactive"
+                    onClick={() => addUIElement('colorPicker', { 
+                      label: 'Color Picker',
+                      defaultColor: '#3b82f6'
+                    })}
+                    style={{ 
+                      width: '100%',
+                      justifyContent: 'flex-start',
+                      gap: 'var(--space-3)',
+                      background: 'linear-gradient(135deg, var(--success), var(--success-light))',
+                      color: 'white'
+                    }}
+                  >
+                    🎨 Color Picker
+                  </button>
+                </div>
               </div>
 
-              <div style={{ marginBottom: '20px' }}>
-                <h4 style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '8px', color: '#6b7280' }}>UI ELEMENTS</h4>
-                <button 
-                  onClick={() => addUIElement('text', { text: 'Heading', fontSize: '24px', fontWeight: 'bold' })}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    marginBottom: '4px',
-                    border: '1px solid #d1d5db',
-                    background: 'white',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  Text
-                </button>
-                <button 
-                  onClick={() => addUIElement('button', { text: 'Submit' })}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    marginBottom: '4px',
-                    border: '1px solid #d1d5db',
-                    background: 'white',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  Button
-                </button>
-                <button 
-                  onClick={() => addUIElement('image', { width: '200px', height: '150px' })}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    marginBottom: '4px',
-                    border: '1px solid #d1d5db',
-                    background: 'white',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  Image
-                </button>
+              {/* UI Elements Section */}
+              <div className="card">
+                <div className="card-header" style={{ padding: 'var(--space-4)' }}>
+                  <h6 style={{ margin: 0, color: 'var(--text-secondary)' }}>UI Elements</h6>
+                </div>
+                <div className="card-body" style={{ padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+                  <button 
+                    className="btn btn-ghost interactive"
+                    onClick={() => addUIElement('text', { text: 'Heading', fontSize: '24px', fontWeight: 'bold' })}
+                    style={{ 
+                      width: '100%',
+                      justifyContent: 'flex-start',
+                      gap: 'var(--space-3)',
+                      border: '1px solid var(--border-dark)'
+                    }}
+                  >
+                    📝 Text
+                  </button>
+                  <button 
+                    className="btn btn-ghost interactive"
+                    onClick={() => addUIElement('button', { text: 'Submit' })}
+                    style={{ 
+                      width: '100%',
+                      justifyContent: 'flex-start',
+                      gap: 'var(--space-3)',
+                      border: '1px solid var(--border-dark)'
+                    }}
+                  >
+                    🔘 Button
+                  </button>
+                  <button 
+                    className="btn btn-ghost interactive"
+                    onClick={() => addUIElement('image', { width: '200px', height: '150px' })}
+                    style={{ 
+                      width: '100%',
+                      justifyContent: 'flex-start',
+                      gap: 'var(--space-3)',
+                      border: '1px solid var(--border-dark)'
+                    }}
+                  >
+                    🖼️ Image
+                  </button>
+                </div>
               </div>
-            </>
+            </div>
           )}
 
           {activeTab === 'flow' && (
-            <>
-              <h3 style={{ margin: '0 0 15px 0', fontSize: '16px' }}>Backend Flow</h3>
+            <div className="fade-in-up" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+              <div>
+                <h3 style={{ 
+                  margin: '0 0 var(--space-4) 0', 
+                  fontSize: 'var(--font-xl)',
+                  fontWeight: '700',
+                  color: 'var(--text)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 'var(--space-2)'
+                }}>
+                  <span style={{
+                    width: '4px',
+                    height: '20px',
+                    background: 'linear-gradient(135deg, var(--warning), var(--error))',
+                    borderRadius: 'var(--radius-full)'
+                  }} />
+                  Backend Flow
+                </h3>
+              </div>
               
-              <div style={{ marginBottom: '20px' }}>
-                <h4 style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '8px', color: '#6b7280' }}>API</h4>
-                <button 
-                  onClick={() => addBackendNode('api', { method: 'POST', endpoint: '/api/submit' })}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    marginBottom: '4px',
-                    border: '1px solid #f59e0b',
-                    background: '#fffbeb',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  API Endpoint
-                </button>
-                <button 
-                  onClick={() => addBackendNode('validation', { type: 'Required Field' })}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    marginBottom: '4px',
-                    border: '1px solid #ef4444',
-                    background: '#fef2f2',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  Validation
-                </button>
+              {/* API Section */}
+              <div className="card">
+                <div className="card-header" style={{ padding: 'var(--space-4)' }}>
+                  <h6 style={{ margin: 0, color: 'var(--text-secondary)' }}>API Endpoints</h6>
+                </div>
+                <div className="card-body" style={{ padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+                  <button 
+                    className="btn btn-secondary interactive"
+                    onClick={() => addBackendNode('api', { method: 'POST', endpoint: '/api/submit' })}
+                    style={{ 
+                      width: '100%',
+                      justifyContent: 'flex-start',
+                      gap: 'var(--space-3)',
+                      background: 'linear-gradient(135deg, var(--warning), var(--warning-light))',
+                      color: 'white'
+                    }}
+                  >
+                    🔌 API Endpoint
+                  </button>
+                  <button 
+                    className="btn btn-secondary interactive"
+                    onClick={() => addBackendNode('validation', { type: 'Required Field' })}
+                    style={{ 
+                      width: '100%',
+                      justifyContent: 'flex-start',
+                      gap: 'var(--space-3)',
+                      background: 'linear-gradient(135deg, var(--error), var(--error-light))',
+                      color: 'white'
+                    }}
+                  >
+                    ✅ Validation
+                  </button>
+                </div>
               </div>
 
-              <div style={{ marginBottom: '20px' }}>
-                <h4 style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '8px', color: '#6b7280' }}>DATABASE</h4>
-                <button 
-                  onClick={() => addBackendNode('database', {})}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    marginBottom: '4px',
-                    border: '1px solid #8b5cf6',
-                    background: '#faf5ff',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  Database
-                </button>
+              {/* Database Section */}
+              <div className="card">
+                <div className="card-header" style={{ padding: 'var(--space-4)' }}>
+                  <h6 style={{ margin: 0, color: 'var(--text-secondary)' }}>Database</h6>
+                </div>
+                <div className="card-body" style={{ padding: 'var(--space-4)' }}>
+                  <button 
+                    className="btn btn-secondary interactive"
+                    onClick={() => addBackendNode('database', {})}
+                    style={{ 
+                      width: '100%',
+                      justifyContent: 'flex-start',
+                      gap: 'var(--space-3)',
+                      background: 'linear-gradient(135deg, var(--secondary), var(--secondary-light))',
+                      color: 'white'
+                    }}
+                  >
+                    🗄️ Database
+                  </button>
+                </div>
               </div>
-            </>
+            </div>
           )}
         </div>
 
-        {/* Generate Button */}
-        <div style={{ padding: '20px', borderTop: '1px solid #e2e8f0' }}>
+        {/* Enhanced Generate Button */}
+        <div style={{ 
+          padding: 'var(--space-6)', 
+          borderTop: '1px solid var(--border)',
+          background: 'var(--bg-secondary)',
+          position: 'sticky',
+          bottom: 0
+        }}>
           <GenerateBtn onClick={generateWebsite} loading={loading} />
         </div>
       </div>
 
-      {/* Main Canvas */}
-      <div data-canvas style={{ flex: 1, position: 'relative' }}>
+      {/* Enhanced Main Canvas */}
+      <div data-canvas className="slide-in-right" style={{ 
+        flex: 1, 
+        position: 'relative',
+        background: 'var(--bg-secondary)',
+        overflow: 'hidden'
+      }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -1465,77 +1808,159 @@ function App() {
           onNodeClick={onNodeClick}
           nodeTypes={nodeTypes}
           fitView
-          defaultEdgeOptions={{ type: 'smoothstep' }}
+          defaultEdgeOptions={{ 
+            type: 'smoothstep',
+            style: { strokeWidth: 2, stroke: 'var(--primary)' }
+          }}
+          style={{ background: 'var(--bg)' }}
         >
-          <Background variant="dots" gap={20} size={1} />
-          <Controls />
+          <Background 
+            variant="dots" 
+            gap={20} 
+            size={1} 
+            color="var(--border)"
+            style={{ opacity: 0.5 }}
+          />
+          <Controls 
+            style={{
+              background: 'var(--bg)',
+              border: '1px solid var(--border)',
+              borderRadius: 'var(--radius-lg)',
+              boxShadow: 'var(--shadow-lg)'
+            }}
+          />
           <MiniMap 
             nodeStrokeWidth={3}
             nodeColor={(node) => {
-              if (node.type?.includes('Element')) return '#3b82f6';
-              if (node.type === 'apiNode') return '#f59e0b';
-              if (node.type === 'databaseNode') return '#8b5cf6';
-              return '#6b7280';
+              if (node.type?.includes('Element')) return 'var(--primary)';
+              if (node.type === 'apiNode') return 'var(--warning)';
+              if (node.type === 'databaseNode') return 'var(--secondary)';
+              return 'var(--text-tertiary)';
+            }}
+            style={{
+              background: 'var(--bg)',
+              border: '1px solid var(--border)',
+              borderRadius: 'var(--radius-lg)',
+              boxShadow: 'var(--shadow-lg)'
             }}
           />
         </ReactFlow>
 
-        {/* Canvas Info */}
+        {/* Enhanced Canvas Info */}
+        <div className="card fade-in" style={{
+          position: 'absolute',
+          top: 'var(--space-4)',
+          left: 'var(--space-4)',
+          padding: 'var(--space-3) var(--space-4)',
+          fontSize: 'var(--font-sm)',
+          color: 'var(--text-secondary)',
+          minWidth: '250px',
+          backdropFilter: 'blur(10px)',
+          background: 'rgba(255,255,255,0.9)',
+          border: '1px solid var(--border)',
+          borderRadius: 'var(--radius-lg)',
+          boxShadow: 'var(--shadow-lg)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+            <div style={{
+              width: '6px',
+              height: '6px',
+              background: activeTab === 'design' ? 'var(--success)' : 'var(--warning)',
+              borderRadius: 'var(--radius-full)',
+              animation: 'pulse 2s infinite'
+            }} />
+            {activeTab === 'design' ? 'Design Canvas - Drag UI elements here' : 'Flow Canvas - Connect elements to backend'}
+          </div>
+        </div>
+
+        {/* Performance Indicator */}
         <div style={{
           position: 'absolute',
-          top: '10px',
-          left: '10px',
-          background: 'rgba(255,255,255,0.9)',
-          padding: '8px 12px',
-          borderRadius: '6px',
-          fontSize: '12px',
-          color: '#6b7280'
+          top: 'var(--space-4)',
+          right: 'var(--space-4)',
+          padding: 'var(--space-2) var(--space-3)',
+          background: 'var(--bg)',
+          border: '1px solid var(--border)',
+          borderRadius: 'var(--radius-lg)',
+          fontSize: 'var(--font-xs)',
+          color: 'var(--text-tertiary)',
+          boxShadow: 'var(--shadow)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 'var(--space-2)'
         }}>
-          {activeTab === 'design' ? 'Design Canvas - Drag UI elements here' : 'Flow Canvas - Connect elements to backend'}
+          <div style={{
+            width: '4px',
+            height: '4px',
+            background: 'var(--success)',
+            borderRadius: 'var(--radius-full)'
+          }} />
+          {nodes.length} elements • {edges.length} connections
         </div>
       </div>
 
-      {/* Input Configuration Modal */}
+      {/* Enhanced Input Configuration Modal */}
       {showInputModal && (
-        <div style={{
+        <div className="fade-in" style={{
           position: 'fixed',
           top: 0,
           left: 0,
           right: 0,
           bottom: 0,
-          background: 'rgba(0,0,0,0.5)',
+          background: 'rgba(0,0,0,0.6)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          zIndex: 1000
+          zIndex: 1000,
+          backdropFilter: 'blur(4px)'
         }}>
-          <div style={{
-            background: 'white',
-            padding: '20px',
-            borderRadius: '8px',
-            width: '400px'
+          <div className="card scale-in" style={{
+            background: 'var(--bg)',
+            padding: 'var(--space-8)',
+            borderRadius: 'var(--radius-xl)',
+            width: '480px',
+            maxWidth: '90vw',
+            boxShadow: 'var(--shadow-xl)',
+            border: '1px solid var(--border)'
           }}>
-            <h3>Configure Input Field</h3>
+            <h3 style={{ 
+              margin: '0 0 var(--space-6) 0',
+              color: 'var(--text)',
+              fontSize: 'var(--font-xl)',
+              fontWeight: '700'
+            }}>
+              Configure Input Field
+            </h3>
             
-            <div style={{ marginBottom: '15px' }}>
+            <div style={{ marginBottom: 'var(--space-4)' }}>
               <label>Label:</label>
               <input
                 type="text"
                 value={inputConfig.label}
                 onChange={(e) => setInputConfig(prev => ({ ...prev, label: e.target.value }))}
-                style={{ width: '100%', padding: '8px', marginTop: '5px', border: '1px solid var(--border)' }}
+                style={{ 
+                  width: '100%', 
+                  padding: 'var(--space-3)', 
+                  marginTop: 'var(--space-1)',
+                  fontSize: 'var(--font-sm)'
+                }}
                 placeholder="e.g., Username, Email"
                 required
               />
               {!inputConfig.label && <div className="error-msg">Label is required</div>}
             </div>
 
-            <div style={{ marginBottom: '15px' }}>
+            <div style={{ marginBottom: 'var(--space-4)' }}>
               <label>Input Type:</label>
               <select
                 value={inputConfig.inputType}
                 onChange={(e) => setInputConfig(prev => ({ ...prev, inputType: e.target.value }))}
-                style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+                style={{ 
+                  width: '100%', 
+                  padding: 'var(--space-3)', 
+                  marginTop: 'var(--space-1)',
+                  fontSize: 'var(--font-sm)'
+                }}
               >
                 <option value="text">Text</option>
                 <option value="email">Email</option>
@@ -1546,53 +1971,74 @@ function App() {
               </select>
             </div>
 
-            <div style={{ marginBottom: '15px' }}>
+            <div style={{ marginBottom: 'var(--space-4)' }}>
               <label>Placeholder:</label>
               <input
                 type="text"
                 value={inputConfig.placeholder}
                 onChange={(e) => setInputConfig(prev => ({ ...prev, placeholder: e.target.value }))}
-                style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+                style={{ 
+                  width: '100%', 
+                  padding: 'var(--space-3)', 
+                  marginTop: 'var(--space-1)',
+                  fontSize: 'var(--font-sm)'
+                }}
                 placeholder="e.g., Enter your username"
               />
             </div>
 
-            <div style={{ marginBottom: '15px' }}>
-              <label>
+            <div style={{ marginBottom: 'var(--space-4)' }}>
+              <label style={{ 
+                display: 'flex', 
+                alignItems: 'center',
+                gap: 'var(--space-2)',
+                cursor: 'pointer'
+              }}>
                 <input
                   type="checkbox"
                   checked={inputConfig.required}
                   onChange={(e) => setInputConfig(prev => ({ ...prev, required: e.target.checked }))}
-                  style={{ marginRight: '8px' }}
+                  style={{ width: '16px', height: '16px' }}
                 />
                 Required field
               </label>
             </div>
 
-            <div style={{ marginBottom: '15px' }}>
+            <div style={{ marginBottom: 'var(--space-4)' }}>
               <label>Database Table Name:</label>
               <input
                 type="text"
                 value={inputConfig.tableName}
                 onChange={(e) => setInputConfig(prev => ({ ...prev, tableName: e.target.value }))}
-                style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+                style={{ 
+                  width: '100%', 
+                  padding: 'var(--space-3)', 
+                  marginTop: 'var(--space-1)',
+                  fontSize: 'var(--font-sm)'
+                }}
                 placeholder="e.g., users, products, orders"
               />
             </div>
 
-            <div style={{ marginBottom: '15px' }}>
+            <div style={{ marginBottom: 'var(--space-6)' }}>
               <label>Database Column Name:</label>
               <input
                 type="text"
                 value={inputConfig.columnName}
                 onChange={(e) => setInputConfig(prev => ({ ...prev, columnName: e.target.value }))}
-                style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+                style={{ 
+                  width: '100%', 
+                  padding: 'var(--space-3)', 
+                  marginTop: 'var(--space-1)',
+                  fontSize: 'var(--font-sm)'
+                }}
                 placeholder="e.g., username, email, first_name"
               />
             </div>
 
-            <div style={{ display: 'flex', gap: '10px' }}>
+            <div style={{ display: 'flex', gap: 'var(--space-3)' }}>
               <button
+                className="btn btn-success interactive"
                 onClick={() => {
                   if (!inputConfig.label) {
                     showToast('Label is required', 'error');
@@ -1601,29 +2047,14 @@ function App() {
                   addInputElement();
                   showToast('Input field added', 'success');
                 }}
-                style={{
-                  flex: 1,
-                  padding: '10px',
-                  background: '#10b981',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer'
-                }}
+                style={{ flex: 1 }}
               >
                 Add Input
               </button>
               <button
+                className="btn btn-ghost interactive"
                 onClick={() => setShowInputModal(false)}
-                style={{
-                  flex: 1,
-                  padding: '10px',
-                  background: '#6b7280',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer'
-                }}
+                style={{ flex: 1 }}
               >
                 Cancel
               </button>
@@ -1631,7 +2062,7 @@ function App() {
           </div>
         </div>
       )}
-    </div>
+      </div>
         </>
       )}
     </>
